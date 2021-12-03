@@ -24,19 +24,19 @@ class CocktailRoutes {
 
 		/** Get an ingredient by name */
 		this.router.get(
-			'/ingredient/details/:ingredient',
-			this.controller.getCocktailsByIngredient
+			'/ingredient/details/name/:ingredientName',
+			this.controller.getIngredientDetailsByName
+		);
+		
+		/** Get an ingredient by an id */
+		this.router.get(
+			'/ingredient/details/id/:ingredientId',
+			this.controller.getIngredientDetailsById
 		);
 
 		/** Get a specific cocktail by ID */
 		this.router.get(
 			'/details/id/:id',
-			this.controller.getCocktailById
-		);
-
-		/** Get cocktails by an ingredient */
-		this.router.get(
-			'/ingredient/:ingredient',
 			this.controller.getCocktailById
 		);
     }
