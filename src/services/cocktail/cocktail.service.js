@@ -319,7 +319,57 @@ class CocktailService {
 
     // Search by ingredient
     // www.thecocktaildb.com/api/json/v1/1/filter.php?i=Gin
+    async getCocktailsByIngredientName(ingredient) {
+        return new Promise(function(resolve, reject){
+            let url = `${COCKTAILDB_URI}/filter.php?i=${ingredient}`;
+    
+            let response = {}
+    
+            // Options used by request
+            const options = {
+                'method': 'GET',
+                'url': url
+            };
+    
+            // Get the drink response from cocktaildb
+            request(options, function (error, res) { 
+                // Set the response status code. If there was an error, set the code to 503
+                response.status = res ? res.statusCode : 503;
+    
+                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
+                if (error) {
+                    console.log(error);
+                    response.body =  {};
+                    response.errMsg = error.toString();
+                    return resolve(response);
+                } else if (res.body === null || res.body.trim() === '') {
+                    response.body = 'No data returned';
+                    return resolve(response)
+                }
+    
+                // Set the response to 200 since there was no error.
+                response.status = res.statusCode;
+    
+                // Parse the response as JSON.
+                let apiResponseBody = {};
+                try {
+                    // console.log('res body', res.body);
+                    apiResponseBody = JSON.parse(res.body);
+                    // console.log('parsed', apiResponseBody);
+                    response.body = {
+                        ...apiResponseBody
+                    }
+                } catch {
+                    response.body = {};
+                    response.errMsg = 'Unable to parse cocktaildb response.'
+                }
+    
+                return resolve(response);
+            });
+        });
+    }
 
+    
     // Filter by alcoholic
     // www.thecocktaildb.com/api/json/v1/1/filter.php?a=Alcoholic
 
