@@ -12,14 +12,26 @@ class CocktailRoutes {
 	initRoutes() {
         /** Get cocktails by name */
         this.router.get(
-            '/name/:cocktailName',
+            '/details/name/:cocktailName',
             this.controller.getCocktailsByName
         );
-		
+
+		/** Get a specific cocktail by ID */
+		this.router.get(
+			'/details/id/:id',
+			this.controller.getCocktailById
+		);
+
 		/** Get cocktails by first letter */
 		this.router.get(
-			'/firstletter/:firstLetter',
+			'/details/firstletter/:firstLetter',
 			this.controller.getCocktailsByFirstLetter
+		);
+
+		/** Get a cocktail by ingredient */
+		this.router.get(
+			'/details/ingredient/:ingredient',
+			this.controller.getRandomCocktail
 		);
 
 		/** Get an ingredient by name */
@@ -32,12 +44,6 @@ class CocktailRoutes {
 		this.router.get(
 			'/ingredient/details/id/:ingredientId',
 			this.controller.getIngredientDetailsById
-		);
-
-		/** Get a specific cocktail by ID */
-		this.router.get(
-			'/details/id/:id',
-			this.controller.getCocktailById
 		);
 
 		/** Get a random cocktail */
