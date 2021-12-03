@@ -31,7 +31,7 @@ class CocktailRoutes {
 		/** Get a cocktail by ingredient */
 		this.router.get(
 			'/details/ingredient/:ingredient',
-			this.controller.getRandomCocktail
+			this.controller.getCocktailsByIngredient
 		);
 
 		/** Get an ingredient by name */

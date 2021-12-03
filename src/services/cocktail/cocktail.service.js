@@ -357,7 +357,8 @@ class CocktailService {
                     apiResponseBody = JSON.parse(res.body);
                     // console.log('parsed', apiResponseBody);
                     response.body = {
-                        ...apiResponseBody
+                        ...apiResponseBody,
+                        total: apiResponseBody.drinks.length
                     }
                 } catch {
                     response.body = {};
