@@ -51,6 +51,12 @@ class CocktailRoutes {
 			'/random',
 			this.controller.getRandomCocktail
 		);
+
+		/** Get a random cocktail */
+		this.router.get(
+			'/alcoholic/:alcoholic',
+			this.controller.getCocktailsByAlcoholic
+		);
     }
 }
 

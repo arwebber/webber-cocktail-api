@@ -83,6 +83,18 @@ class CocktailController {
                   return next(err);
             }
 	}
+
+      async getCocktailsByAlcoholic(req, res, next) {
+		try {
+                  const cocktailService = new CocktailService()
+                  const { alcoholic } = req.params;
+                  const response = await cocktailService.getCocktailsByAlcoholic(alcoholic);
+                  return res.json({response});
+            } 
+            catch (err) {
+                  return next(err);
+            }
+	}
 }
 
 module.exports = CocktailController
