@@ -25,11 +25,11 @@ class CocktailController {
             }
 	}
 
-      async getIngredientByName(req, res, next) {
+      async getIngredientDetailsByName(req, res, next) {
 		try {
                   const cocktailService = new CocktailService()
-                  const { ingredient } = req.params;
-                  const response = await cocktailService.getIngredientByName(ingredient);
+                  const { ingredientName } = req.params;
+                  const response = await cocktailService.getIngredientDetailsByName(ingredientName);
                   return res.json({response});
             } 
             catch (err) {
@@ -50,11 +50,11 @@ class CocktailController {
 	}
 
 
-      async getCocktailsByIngredient(req, res, next) {
+      async getIngredientDetailsById(req, res, next) {
 		try {
                   const cocktailService = new CocktailService()
-                  const { ingredient } = req.params;
-                  const response = await cocktailService.getCocktailsByIngredient(ingredient);
+                  const { ingredientId } = req.params;
+                  const response = await cocktailService.getIngredientDetailsById(ingredientId);
                   return res.json({response});
             } 
             catch (err) {

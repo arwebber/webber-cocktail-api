@@ -112,9 +112,9 @@ class CocktailService {
     }
 
     // Search ingredient by name
-    async getIngredientByName(ingredient) {
+    async getIngredientDetailsByName(ingredientName) {
         return new Promise(function(resolve, reject){
-            let url = `${COCKTAILDB_URI}/search.php?i=${ingredient}`;
+            let url = `${COCKTAILDB_URI}/search.php?i=${ingredientName}`;
 
             let response = {}
 
@@ -167,7 +167,6 @@ class CocktailService {
     // www.thecocktaildb.com/api/json/v1/1/lookup.php?i=11007
     async getCocktailById(id) {
         return new Promise(function(resolve, reject){
-            console.log('searching for', id);
             let url = `${COCKTAILDB_URI}/lookup.php?i=${id}`;
 
             let response = {}
@@ -218,9 +217,9 @@ class CocktailService {
 
     // Lookup ingredient by ID
     // www.thecocktaildb.com/api/json/v1/1/lookup.php?iid=552
-    async getCocktailsByIngredient(id) {
+    async getIngredientDetailsById(ingredientId) {
         return new Promise(function(resolve, reject){
-            let url = `${COCKTAILDB_URI}/lookup.php?iid=${id}`;
+            let url = `${COCKTAILDB_URI}/lookup.php?iid=${ingredientId}`;
 
             let response = {}
 
@@ -267,7 +266,7 @@ class CocktailService {
             });
         });
     }
-    
+
     // Lookup a random cocktail
     // www.thecocktaildb.com/api/json/v1/1/random.php
 
