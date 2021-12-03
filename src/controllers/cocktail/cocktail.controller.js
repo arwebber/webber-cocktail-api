@@ -48,6 +48,19 @@ class CocktailController {
                   return next(err);
             }
 	}
+
+
+      async getCocktailsByIngredient(req, res, next) {
+		try {
+                  const cocktailService = new CocktailService()
+                  const { ingredient } = req.params;
+                  const response = await cocktailService.getCocktailsByIngredient(ingredient);
+                  return res.json({response});
+            } 
+            catch (err) {
+                  return next(err);
+            }
+	}
 }
 
 module.exports = CocktailController
