@@ -12,14 +12,38 @@ class CocktailRoutes {
 	initRoutes() {
         /** Get cocktails by name */
         this.router.get(
-            '/name/:cocktailName',
+            '/details/name/:cocktailName',
             this.controller.getCocktailsByName
         );
-		
+
+		/** Get a specific cocktail by ID */
+		this.router.get(
+			'/details/id/:id',
+			this.controller.getCocktailById
+		);
+
 		/** Get cocktails by first letter */
 		this.router.get(
-			'/firstletter/:firstLetter',
+			'/details/firstletter/:firstLetter',
 			this.controller.getCocktailsByFirstLetter
+		);
+
+		/** Get a cocktail by ingredient */
+		this.router.get(
+			'/details/ingredient/:ingredient',
+			this.controller.getCocktailsByIngredient
+		);
+
+		/** Get cocktails by category */
+		this.router.get(
+			'/details/category/:category',
+			this.controller.getCocktailsByCategory
+		);
+
+		/** Get cocktails by category */
+		this.router.get(
+			'/details/glass/:glass',
+			this.controller.getCocktailsByGlass
 		);
 
 		/** Get an ingredient by name */
@@ -34,10 +58,22 @@ class CocktailRoutes {
 			this.controller.getIngredientDetailsById
 		);
 
-		/** Get a specific cocktail by ID */
+		/** Get a random cocktail */
 		this.router.get(
-			'/details/id/:id',
-			this.controller.getCocktailById
+			'/random',
+			this.controller.getRandomCocktail
+		);
+
+		/** Get cocktails by alcololic */
+		this.router.get(
+			'/alcoholic/:alcoholic',
+			this.controller.getCocktailsByAlcoholic
+		);
+
+		/** Get a list of options for a filter */
+		this.router.get(
+			'/filter/:filter',
+			this.controller.getFilterListByFilter
 		);
     }
 }

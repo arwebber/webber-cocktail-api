@@ -37,6 +37,18 @@ class CocktailController {
             }
 	}
 
+      async getIngredientDetailsById(req, res, next) {
+		try {
+                  const cocktailService = new CocktailService()
+                  const { ingredientId } = req.params;
+                  const response = await cocktailService.getIngredientDetailsById(ingredientId);
+                  return res.json({response});
+            } 
+            catch (err) {
+                  return next(err);
+            }
+	}
+
       async getCocktailById(req, res, next) {
 		try {
                   const cocktailService = new CocktailService()
@@ -49,12 +61,70 @@ class CocktailController {
             }
 	}
 
-
-      async getIngredientDetailsById(req, res, next) {
+      async getRandomCocktail(req, res, next) {
 		try {
                   const cocktailService = new CocktailService()
-                  const { ingredientId } = req.params;
-                  const response = await cocktailService.getIngredientDetailsById(ingredientId);
+                  const response = await cocktailService.getRandomCocktail();
+                  return res.json({response});
+            } 
+            catch (err) {
+                  return next(err);
+            }
+	}
+
+      async getCocktailsByIngredient(req, res, next) {
+		try {
+                  const cocktailService = new CocktailService()
+                  const { ingredient } = req.params;
+                  const response = await cocktailService.getCocktailsByIngredientName(ingredient);
+                  return res.json({response});
+            } 
+            catch (err) {
+                  return next(err);
+            }
+	}
+
+      async getCocktailsByAlcoholic(req, res, next) {
+		try {
+                  const cocktailService = new CocktailService()
+                  const { alcoholic } = req.params;
+                  const response = await cocktailService.getCocktailsByAlcoholic(alcoholic);
+                  return res.json({response});
+            } 
+            catch (err) {
+                  return next(err);
+            }
+	}
+
+      async getCocktailsByCategory(req, res, next) {
+		try {
+                  const cocktailService = new CocktailService()
+                  const { category } = req.params;
+                  const response = await cocktailService.getCocktailsByCategory(category);
+                  return res.json({response});
+            } 
+            catch (err) {
+                  return next(err);
+            }
+	}
+
+      async getCocktailsByGlass(req, res, next) {
+		try {
+                  const cocktailService = new CocktailService()
+                  const { glass } = req.params;
+                  const response = await cocktailService.getCocktailsByGlass(glass);
+                  return res.json({response});
+            } 
+            catch (err) {
+                  return next(err);
+            }
+	}
+
+      async getFilterListByFilter(req, res, next) {
+		try {
+                  const cocktailService = new CocktailService()
+                  const { filter } = req.params;
+                  const response = await cocktailService.getFilterListByFilter(filter);
                   return res.json({response});
             } 
             catch (err) {
