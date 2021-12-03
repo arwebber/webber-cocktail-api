@@ -5,7 +5,12 @@ class CocktailController {
 		try {
                   const cocktailService = new CocktailService()
                   const { cocktailName } = req.params;
-                  const response = await cocktailService.getCocktailsByName(cocktailName);
+
+                  // Set the page size and index
+                  let pageSize = req.query.pageSize ? req.query.pageSize : '10';
+                  let pageIndex = req.query.pageIndex ? req.query.pageIndex : '0';
+
+                  const response = await cocktailService.getCocktailsByName(pageSize, pageIndex, cocktailName);
                   return res.json({response});
             } 
             catch (err) {
@@ -17,7 +22,12 @@ class CocktailController {
 		try {
                   const cocktailService = new CocktailService()
                   const { firstLetter } = req.params;
-                  const response = await cocktailService.getCocktailsByFirstLetter(firstLetter);
+
+                  // Set the page size and index
+                  let pageSize = req.query.pageSize ? req.query.pageSize : '10';
+                  let pageIndex = req.query.pageIndex ? req.query.pageIndex : '0';
+
+                  const response = await cocktailService.getCocktailsByFirstLetter(pageSize, pageIndex, firstLetter);
                   return res.json({response});
             } 
             catch (err) {
@@ -76,7 +86,12 @@ class CocktailController {
 		try {
                   const cocktailService = new CocktailService()
                   const { ingredient } = req.params;
-                  const response = await cocktailService.getCocktailsByIngredientName(ingredient);
+
+                  // Set the page size and index
+                  let pageSize = req.query.pageSize ? req.query.pageSize : '10';
+                  let pageIndex = req.query.pageIndex ? req.query.pageIndex : '0';
+
+                  const response = await cocktailService.getCocktailsByIngredientName(pageSize, pageIndex, ingredient);
                   return res.json({response});
             } 
             catch (err) {
@@ -88,7 +103,12 @@ class CocktailController {
 		try {
                   const cocktailService = new CocktailService()
                   const { alcoholic } = req.params;
-                  const response = await cocktailService.getCocktailsByAlcoholic(alcoholic);
+
+                  // Set the page size and index
+                  let pageSize = req.query.pageSize ? req.query.pageSize : '10';
+                  let pageIndex = req.query.pageIndex ? req.query.pageIndex : '0';
+
+                  const response = await cocktailService.getCocktailsByAlcoholic(pageSize, pageIndex, alcoholic);
                   return res.json({response});
             } 
             catch (err) {
@@ -100,7 +120,12 @@ class CocktailController {
 		try {
                   const cocktailService = new CocktailService()
                   const { category } = req.params;
-                  const response = await cocktailService.getCocktailsByCategory(category);
+
+                  // Set the page size and index
+                  let pageSize = req.query.pageSize ? req.query.pageSize : '10';
+                  let pageIndex = req.query.pageIndex ? req.query.pageIndex : '0';
+
+                  const response = await cocktailService.getCocktailsByCategory(pageSize, pageIndex, category);
                   return res.json({response});
             } 
             catch (err) {
@@ -112,7 +137,12 @@ class CocktailController {
 		try {
                   const cocktailService = new CocktailService()
                   const { glass } = req.params;
-                  const response = await cocktailService.getCocktailsByGlass(glass);
+
+                  // Set the page size and index
+                  let pageSize = req.query.pageSize ? req.query.pageSize : '10';
+                  let pageIndex = req.query.pageIndex ? req.query.pageIndex : '0';
+
+                  const response = await cocktailService.getCocktailsByGlass(pageSize, pageIndex, glass);
                   return res.json({response});
             } 
             catch (err) {
@@ -124,7 +154,12 @@ class CocktailController {
 		try {
                   const cocktailService = new CocktailService()
                   const { filter } = req.params;
-                  const response = await cocktailService.getFilterListByFilter(filter);
+
+                  // Set the page size and index
+                  let pageSize = req.query.pageSize ? req.query.pageSize : '10';
+                  let pageIndex = req.query.pageIndex ? req.query.pageIndex : '0';
+
+                  const response = await cocktailService.getFilterListByFilter(pageSize, pageIndex, filter);
                   return res.json({response});
             } 
             catch (err) {

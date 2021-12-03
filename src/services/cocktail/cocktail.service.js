@@ -8,12 +8,24 @@ let COCKTAILDB_URI = process.env.COCKTAILDB_URI;
 class CocktailService {
 
     // Search cocktail by name
-    async getCocktailsByName(name) {
+    async getCocktailsByName(pageSize, pageIndex, name) {
         return new Promise(function(resolve, reject){
             let url = `${COCKTAILDB_URI}/search.php?s=${name}`;
 
             let response = {}
 
+            // Parse the page size and int
+            let pageSizeInt = parseInt(pageSize);
+            let pageIndexInt = parseInt(pageIndex);
+
+            // If a non int is passed in as the page size or index, send back a 503
+            if (isNaN(pageSizeInt) || isNaN(pageIndexInt)) {
+                response.status = 503;
+                response.body = {};
+                response.errMsg = 'Error parsing pageSize or pageIndex.';
+                return resolve(response);
+            }
+            
             // Options used by request
             const options = {
                 'method': 'GET',
@@ -42,12 +54,18 @@ class CocktailService {
                 // Parse the response as JSON.
                 let apiResponseBody = {};
                 try {
-                    // console.log('res body', res.body);
                     apiResponseBody = JSON.parse(res.body);
-                    // console.log('parsed', apiResponseBody);
+
+                    const responseStartIndex = pageSizeInt * pageIndexInt;
+                    const responseStopIndex = responseStartIndex + pageSizeInt;
+
+                    const paginatedResponse = apiResponseBody.drinks.slice(responseStartIndex, responseStopIndex);
+
                     response.body = {
-                        ...apiResponseBody,
-                        total: apiResponseBody.drinks.length
+                        drinks: paginatedResponse,
+                        total: apiResponseBody.drinks.length,
+                        pageIndex: pageIndexInt,
+                        pageSize: pageSizeInt
                     }
                 } catch {
                     response.body = {};
@@ -60,11 +78,23 @@ class CocktailService {
     }
 
     // List all cocktails by first letter
-    async getCocktailsByFirstLetter(letter) {
+    async getCocktailsByFirstLetter(pageSize, pageIndex, letter) {
         return new Promise(function(resolve, reject){
             let url = `${COCKTAILDB_URI}/search.php?f=${letter}`;
 
             let response = {}
+
+            // Parse the page size and int
+            let pageSizeInt = parseInt(pageSize);
+            let pageIndexInt = parseInt(pageIndex);
+
+            // If a non int is passed in as the page size or index, send back a 503
+            if (isNaN(pageSizeInt) || isNaN(pageIndexInt)) {
+                response.status = 503;
+                response.body = {};
+                response.errMsg = 'Error parsing pageSize or pageIndex.';
+                return resolve(response);
+            }
 
             // Options used by request
             const options = {
@@ -96,10 +126,17 @@ class CocktailService {
                 try {
                     // console.log('res body', res.body);
                     apiResponseBody = JSON.parse(res.body);
-                    // console.log('parsed', apiResponseBody);
+
+                    const responseStartIndex = pageSizeInt * pageIndexInt;
+                    const responseStopIndex = responseStartIndex + pageSizeInt;
+
+                    const paginatedResponse = apiResponseBody.drinks.slice(responseStartIndex, responseStopIndex);
+
                     response.body = {
-                        ...apiResponseBody,
-                        total: apiResponseBody.drinks.length
+                        drinks: paginatedResponse,
+                        total: apiResponseBody.drinks.length,
+                        pageIndex: pageIndexInt,
+                        pageSize: pageSizeInt
                     }
                 } catch {
                     response.body = {};
@@ -319,12 +356,24 @@ class CocktailService {
 
     // Search by ingredient
     // www.thecocktaildb.com/api/json/v1/1/filter.php?i=Gin
-    async getCocktailsByIngredientName(ingredient) {
+    async getCocktailsByIngredientName(pageSize, pageIndex, ingredient) {
         return new Promise(function(resolve, reject){
             let url = `${COCKTAILDB_URI}/filter.php?i=${ingredient}`;
     
             let response = {}
     
+            // Parse the page size and int
+            let pageSizeInt = parseInt(pageSize);
+            let pageIndexInt = parseInt(pageIndex);
+
+            // If a non int is passed in as the page size or index, send back a 503
+            if (isNaN(pageSizeInt) || isNaN(pageIndexInt)) {
+                response.status = 503;
+                response.body = {};
+                response.errMsg = 'Error parsing pageSize or pageIndex.';
+                return resolve(response);
+            }
+
             // Options used by request
             const options = {
                 'method': 'GET',
@@ -355,10 +404,17 @@ class CocktailService {
                 try {
                     // console.log('res body', res.body);
                     apiResponseBody = JSON.parse(res.body);
-                    // console.log('parsed', apiResponseBody);
+
+                    const responseStartIndex = pageSizeInt * pageIndexInt;
+                    const responseStopIndex = responseStartIndex + pageSizeInt;
+
+                    const paginatedResponse = apiResponseBody.drinks.slice(responseStartIndex, responseStopIndex);
+
                     response.body = {
-                        ...apiResponseBody,
-                        total: apiResponseBody.drinks.length
+                        drinks: paginatedResponse,
+                        total: apiResponseBody.drinks.length,
+                        pageIndex: pageIndexInt,
+                        pageSize: pageSizeInt
                     }
                 } catch {
                     response.body = {};
@@ -372,13 +428,25 @@ class CocktailService {
     
     // Filter by alcoholic
     // www.thecocktaildb.com/api/json/v1/1/filter.php?a=Alcoholic
-    async getCocktailsByAlcoholic(alcoholic) {
+    async getCocktailsByAlcoholic(pageSize, pageIndex, alcoholic) {
         return new Promise(function(resolve, reject){
             // TODO: validate input either alcoholic or non.
             let url = `${COCKTAILDB_URI}/filter.php?a=${alcoholic}`;
     
             let response = {}
     
+            // Parse the page size and int
+            let pageSizeInt = parseInt(pageSize);
+            let pageIndexInt = parseInt(pageIndex);
+
+            // If a non int is passed in as the page size or index, send back a 503
+            if (isNaN(pageSizeInt) || isNaN(pageIndexInt)) {
+                response.status = 503;
+                response.body = {};
+                response.errMsg = 'Error parsing pageSize or pageIndex.';
+                return resolve(response);
+            }
+
             // Options used by request
             const options = {
                 'method': 'GET',
@@ -409,9 +477,17 @@ class CocktailService {
                 try {
                     // console.log('res body', res.body);
                     apiResponseBody = JSON.parse(res.body);
-                    // console.log('parsed', apiResponseBody);
+                    
+                    const responseStartIndex = pageSizeInt * pageIndexInt;
+                    const responseStopIndex = responseStartIndex + pageSizeInt;
+
+                    const paginatedResponse = apiResponseBody.drinks.slice(responseStartIndex, responseStopIndex);
+
                     response.body = {
-                        ...apiResponseBody
+                        drinks: paginatedResponse,
+                        total: apiResponseBody.drinks.length,
+                        pageIndex: pageIndexInt,
+                        pageSize: pageSizeInt
                     }
                 } catch {
                     response.body = {};
@@ -425,13 +501,25 @@ class CocktailService {
 
     // Filter by Category
     // www.thecocktaildb.com/api/json/v1/1/filter.php?c=Ordinary_Drink
-    async getCocktailsByCategory(category) {
+    async getCocktailsByCategory(pageSize, pageIndex, category) {
         return new Promise(function(resolve, reject){
             // TODO: validate input either alcoholic or non.
             let url = `${COCKTAILDB_URI}/filter.php?c=${category}`;
     
             let response = {}
     
+            // Parse the page size and int
+            let pageSizeInt = parseInt(pageSize);
+            let pageIndexInt = parseInt(pageIndex);
+
+            // If a non int is passed in as the page size or index, send back a 503
+            if (isNaN(pageSizeInt) || isNaN(pageIndexInt)) {
+                response.status = 503;
+                response.body = {};
+                response.errMsg = 'Error parsing pageSize or pageIndex.';
+                return resolve(response);
+            }
+
             // Options used by request
             const options = {
                 'method': 'GET',
@@ -462,9 +550,17 @@ class CocktailService {
                 try {
                     // console.log('res body', res.body);
                     apiResponseBody = JSON.parse(res.body);
-                    // console.log('parsed', apiResponseBody);
+                    
+                    const responseStartIndex = pageSizeInt * pageIndexInt;
+                    const responseStopIndex = responseStartIndex + pageSizeInt;
+
+                    const paginatedResponse = apiResponseBody.drinks.slice(responseStartIndex, responseStopIndex);
+
                     response.body = {
-                        ...apiResponseBody
+                        drinks: paginatedResponse,
+                        total: apiResponseBody.drinks.length,
+                        pageIndex: pageIndexInt,
+                        pageSize: pageSizeInt
                     }
                 } catch {
                     response.body = {};
@@ -478,13 +574,25 @@ class CocktailService {
 
     // Filter by Glass
     // www.thecocktaildb.com/api/json/v1/1/filter.php?g=Cocktail_glass
-    async getCocktailsByGlass(glass) {
+    async getCocktailsByGlass(pageSize, pageIndex, glass) {
         return new Promise(function(resolve, reject){
             // TODO: validate input either alcoholic or non.
             let url = `${COCKTAILDB_URI}/filter.php?g=${glass}`;
     
             let response = {}
     
+            // Parse the page size and int
+            let pageSizeInt = parseInt(pageSize);
+            let pageIndexInt = parseInt(pageIndex);
+
+            // If a non int is passed in as the page size or index, send back a 503
+            if (isNaN(pageSizeInt) || isNaN(pageIndexInt)) {
+                response.status = 503;
+                response.body = {};
+                response.errMsg = 'Error parsing pageSize or pageIndex.';
+                return resolve(response);
+            }
+
             // Options used by request
             const options = {
                 'method': 'GET',
@@ -515,9 +623,17 @@ class CocktailService {
                 try {
                     // console.log('res body', res.body);
                     apiResponseBody = JSON.parse(res.body);
-                    // console.log('parsed', apiResponseBody);
+                    
+                    const responseStartIndex = pageSizeInt * pageIndexInt;
+                    const responseStopIndex = responseStartIndex + pageSizeInt;
+
+                    const paginatedResponse = apiResponseBody.drinks.slice(responseStartIndex, responseStopIndex);
+
                     response.body = {
-                        ...apiResponseBody
+                        drinks: paginatedResponse,
+                        total: apiResponseBody.drinks.length,
+                        pageIndex: pageIndexInt,
+                        pageSize: pageSizeInt
                     }
                 } catch {
                     response.body = {};
@@ -531,7 +647,7 @@ class CocktailService {
 
     // List the categories, glasses, ingredients or alcoholic filters
     // www.thecocktaildb.com/api/json/v1/1/list.php?c=list
-    async getFilterListByFilter(filter) {
+    async getFilterListByFilter(pageSize, pageIndex, filter) {
         return new Promise(function(resolve, reject){
             // TODO: validate input either alcoholic or non.
             let filterList = '';
@@ -551,11 +667,21 @@ class CocktailService {
             }
 
             let url = `${COCKTAILDB_URI}/list.php?${filterList}=list`;
-    
-            console.log('searching', url);
 
             let response = {}
     
+            // Parse the page size and int
+            let pageSizeInt = parseInt(pageSize);
+            let pageIndexInt = parseInt(pageIndex);
+
+            // If a non int is passed in as the page size or index, send back a 503
+            if (isNaN(pageSizeInt) || isNaN(pageIndexInt)) {
+                response.status = 503;
+                response.body = {};
+                response.errMsg = 'Error parsing pageSize or pageIndex.';
+                return resolve(response);
+            }
+
             // Options used by request
             const options = {
                 'method': 'GET',
@@ -586,9 +712,17 @@ class CocktailService {
                 try {
                     // console.log('res body', res.body);
                     apiResponseBody = JSON.parse(res.body);
-                    // console.log('parsed', apiResponseBody);
+                    
+                    const responseStartIndex = pageSizeInt * pageIndexInt;
+                    const responseStopIndex = responseStartIndex + pageSizeInt;
+
+                    const paginatedResponse = apiResponseBody.drinks.slice(responseStartIndex, responseStopIndex);
+
                     response.body = {
-                        ...apiResponseBody
+                        drinks: paginatedResponse,
+                        total: apiResponseBody.drinks.length,
+                        pageIndex: pageIndexInt,
+                        pageSize: pageSizeInt
                     }
                 } catch {
                     response.body = {};
