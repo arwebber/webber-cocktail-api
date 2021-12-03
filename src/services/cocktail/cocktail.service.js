@@ -112,7 +112,7 @@ class CocktailService {
     }
 
     // Search ingredient by name
-    async getCocktailsByIngredient(ingredient) {
+    async getIngredientByName(ingredient) {
         return new Promise(function(resolve, reject){
             let url = `${COCKTAILDB_URI}/search.php?i=${ingredient}`;
 
