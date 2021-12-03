@@ -95,6 +95,18 @@ class CocktailController {
                   return next(err);
             }
 	}
+
+      async getCocktailsByCategory(req, res, next) {
+		try {
+                  const cocktailService = new CocktailService()
+                  const { category } = req.params;
+                  const response = await cocktailService.getCocktailsByCategory(category);
+                  return res.json({response});
+            } 
+            catch (err) {
+                  return next(err);
+            }
+	}
 }
 
 module.exports = CocktailController

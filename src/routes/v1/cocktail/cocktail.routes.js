@@ -34,6 +34,12 @@ class CocktailRoutes {
 			this.controller.getCocktailsByIngredient
 		);
 
+		/** Get cocktails by category */
+		this.router.get(
+			'/details/category/:category',
+			this.controller.getCocktailsByCategory
+		);
+
 		/** Get an ingredient by name */
 		this.router.get(
 			'/ingredient/details/name/:ingredientName',
