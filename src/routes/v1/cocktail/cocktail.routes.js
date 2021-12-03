@@ -39,6 +39,12 @@ class CocktailRoutes {
 			'/details/id/:id',
 			this.controller.getCocktailById
 		);
+
+		/** Get a random cocktail */
+		this.router.get(
+			'/random',
+			this.controller.getRandomCocktail
+		);
     }
 }
 
