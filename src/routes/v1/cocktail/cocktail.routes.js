@@ -64,10 +64,16 @@ class CocktailRoutes {
 			this.controller.getRandomCocktail
 		);
 
-		/** Get a random cocktail */
+		/** Get cocktails by alcololic */
 		this.router.get(
 			'/alcoholic/:alcoholic',
 			this.controller.getCocktailsByAlcoholic
+		);
+
+		/** Get a list of options for a filter */
+		this.router.get(
+			'/filter/:filter',
+			this.controller.getFilterListByFilter
 		);
     }
 }

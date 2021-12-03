@@ -119,6 +119,18 @@ class CocktailController {
                   return next(err);
             }
 	}
+
+      async getFilterListByFilter(req, res, next) {
+		try {
+                  const cocktailService = new CocktailService()
+                  const { filter } = req.params;
+                  const response = await cocktailService.getFilterListByFilter(filter);
+                  return res.json({response});
+            } 
+            catch (err) {
+                  return next(err);
+            }
+	}
 }
 
 module.exports = CocktailController
