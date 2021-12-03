@@ -10,19 +10,19 @@ class CocktailRoutes {
 	}
 
 	initRoutes() {
-        /** Get a specific cocktail from cocktaildb */
+        /** Get cocktails by name */
         this.router.get(
             '/name/:cocktailName',
             this.controller.getCocktailsByName
         );
 		
-		/** Get a specific cocktail from cocktaildb */
+		/** Get cocktails by first letter */
 		this.router.get(
 			'/firstletter/:firstLetter',
 			this.controller.getCocktailsByFirstLetter
 		);
 
-		/** Get a specific cocktail from cocktaildb */
+		/** Get an ingredient by name */
 		this.router.get(
 			'/ingredient/:ingredient',
 			this.controller.getCocktailsByIngredient
