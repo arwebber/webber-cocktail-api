@@ -243,7 +243,8 @@ class CocktailDBService {
                 // Select statement
                 const sqlQuery = `SELECT strDrink, strDrinkThumb, idDrink 
                                     FROM COCKTAIL 
-                                    WHERE ? in (strIngredient1,strIngredient2,strIngredient3,strIngredient4,strIngredient5,strIngredient6,strIngredient7,strIngredient8,strIngredient9,strIngredient10,strIngredient11,strIngredient12,strIngredient13,strIngredient14,strIngredient15)`;
+                                    WHERE ? in (strIngredient1,strIngredient2,strIngredient3,strIngredient4,strIngredient5,strIngredient6,strIngredient7,strIngredient8,strIngredient9,strIngredient10,strIngredient11,strIngredient12,strIngredient13,strIngredient14,strIngredient15)
+                                    ORDER BY dateModified DESC`;
 
                 // Execute select
                 const rows = await db.query(sqlQuery, [ingredientName]);
@@ -275,7 +276,7 @@ class CocktailDBService {
                 }
 
                 // Select statement
-                const sqlQuery = `SELECT strDrink, strDrinkThumb, idDrink FROM COCKTAIL WHERE strAlcoholic=?`;
+                const sqlQuery = `SELECT strDrink, strDrinkThumb, idDrink FROM COCKTAIL WHERE strAlcoholic=? ORDER BY dateModified DESC`;
 
                 // Execute select
                 const rows = await db.query(sqlQuery, [alcoholic]);
@@ -307,7 +308,7 @@ class CocktailDBService {
                 }
 
                 // Select statement
-                const sqlQuery = `SELECT strDrink, strDrinkThumb, idDrink FROM COCKTAIL WHERE strCategory=?`;
+                const sqlQuery = `SELECT strDrink, strDrinkThumb, idDrink FROM COCKTAIL WHERE strCategory=? ORDER BY dateModified DESC`;
 
                 // Execute select
                 const rows = await db.query(sqlQuery, [category]);
@@ -339,7 +340,7 @@ class CocktailDBService {
                 }
 
                 // Select statement
-                const sqlQuery = `SELECT strDrink, strDrinkThumb, idDrink FROM COCKTAIL WHERE strGlass=?`;
+                const sqlQuery = `SELECT strDrink, strDrinkThumb, idDrink FROM COCKTAIL WHERE strGlass=? ORDER BY dateModified DESC`;
 
                 // Execute select
                 const rows = await db.query(sqlQuery, [glass]);

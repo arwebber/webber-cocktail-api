@@ -413,7 +413,7 @@ function paginateResponse(pageSizeInt, pageIndexInt, array1, array2) {
     let combinedArrayLength = combinedArray.length;
 
     // Sort the array by date modified to ensure consistent paginated results.
-    combinedArray.sort((a, b) => (a.dateModified > b.dateModified) ? 1 : -1)
+    combinedArray.sort((a, b) => (a.dateModified < b.dateModified) ? 1 : -1)
 
     // Determine which drinks to return for paginated results.
     const responseStartIndex = pageSizeInt * pageIndexInt;
