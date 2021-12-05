@@ -168,7 +168,7 @@ class CocktailDBService {
         });
     }
 
-    async getCocktailsByFirstName(cocktailFirstName) {
+    async getCocktailsByFirstLetter(cocktailFirstName) {
         return new Promise(async function(resolve, reject) {
             let response = {}
             try {
@@ -187,7 +187,10 @@ class CocktailDBService {
                 const rows = await db.query(sqlQuery, [cocktailFirstName]);
             
                 response.status = 200;
-                response.body = { drinks: rows };
+                response.body = { 
+                    drinks: rows,
+                    total: rows.length
+                };
             } catch (error) {
                 response.status = 503;
                 response.body = `ERROR: Failed to retrieve user created cocktail.`;
@@ -197,7 +200,7 @@ class CocktailDBService {
         });
     }
 
-    async getCocktailsById(cocktailId) {
+    async getCocktailById(cocktailId) {
         return new Promise(async function(resolve, reject) { 
             let response = {}
             try {
@@ -216,7 +219,10 @@ class CocktailDBService {
                 const rows = await db.query(sqlQuery, [cocktailId]);
             
                 response.status = 200;
-                response.body = { drinks: rows };
+                response.body = { 
+                    drinks: rows,
+                    total: rows.length
+                };
             } catch (error) {
                 response.status = 503;
                 response.body = `ERROR: Failed to retrieve user created cocktail.`;
@@ -240,13 +246,18 @@ class CocktailDBService {
                 }
 
                 // Select statement
-                const sqlQuery = `SELECT strDrink, strDrinkThumb, idDrink FROM COCKTAIL WHERE strIngredient1=?`;
+                const sqlQuery = `SELECT strDrink, strDrinkThumb, idDrink 
+                                    FROM COCKTAIL 
+                                    WHERE ? in (strIngredient1,strIngredient2,strIngredient3,strIngredient4,strIngredient5,strIngredient6,strIngredient7,strIngredient8,strIngredient9,strIngredient10,strIngredient11,strIngredient12,strIngredient13,strIngredient14,strIngredient15)`;
 
                 // Execute select
                 const rows = await db.query(sqlQuery, [ingredientName]);
             
                 response.status = 200;
-                response.body = { drinks: rows };
+                response.body = { 
+                    drinks: rows,
+                    total: rows.length
+                };
             } catch (error) {
                 response.status = 503;
                 response.body = `ERROR: Failed to retrieve user created cocktail.`;
@@ -275,7 +286,10 @@ class CocktailDBService {
                 const rows = await db.query(sqlQuery, [alcoholic]);
             
                 response.status = 200;
-                response.body = { drinks: rows };
+                response.body = { 
+                    drinks: rows,
+                    total: rows.length
+                };
             } catch (error) {
                 response.status = 503;
                 response.body = `ERROR: Failed to retrieve user created cocktail.`;
@@ -285,7 +299,7 @@ class CocktailDBService {
         });
     }
 
-    async getCocktailsByCategory(categories) {
+    async getCocktailsByCategory(category) {
         return new Promise(async function(resolve, reject) {
             let response = {}
             try {
@@ -298,13 +312,16 @@ class CocktailDBService {
                 }
 
                 // Select statement
-                const sqlQuery = `SELECT strDrink, strDrinkThumb, idDrink FROM COCKTAIL WHERE strCategory in (${categories})`;
+                const sqlQuery = `SELECT strDrink, strDrinkThumb, idDrink FROM COCKTAIL WHERE strCategory=?`;
 
                 // Execute select
-                const rows = await db.query(sqlQuery);
+                const rows = await db.query(sqlQuery, [category]);
             
                 response.status = 200;
-                response.body = { drinks: rows };
+                response.body = { 
+                    drinks: rows,
+                    total: rows.length
+                };
             } catch (error) {
                 response.status = 503;
                 response.body = `ERROR: Failed to retrieve user created cocktail.`;
@@ -333,7 +350,34 @@ class CocktailDBService {
                 const rows = await db.query(sqlQuery, [glass]);
             
                 response.status = 200;
-                response.body = { drinks: rows };
+                response.body = { 
+                    drinks: rows,
+                    total: rows.length
+                };
+            } catch (error) {
+                response.status = 503;
+                response.body = `ERROR: Failed to retrieve user created cocktail.`;
+                response.errMsg = error.message;
+            }
+            return resolve(response);
+        });
+    }
+
+    async getRandomCocktail() {
+        return new Promise(async function(resolve, reject) {
+            let response = {}
+            try {
+                // Select statement
+                const sqlQuery = `SELECT * FROM COCKTAIL ORDER BY RAND() LIMIT 1`;
+
+                // Execute select
+                const rows = await db.query(sqlQuery);
+            
+                response.status = 200;
+                response.body = { 
+                    drinks: rows,
+                    total: rows.length
+                };
             } catch (error) {
                 response.status = 503;
                 response.body = `ERROR: Failed to retrieve user created cocktail.`;

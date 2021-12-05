@@ -30,10 +30,10 @@ class CocktailRoutes {
 		);
 
 		/** Get a cocktail by ingredient */
-		this.router.get(
-			'/details/ingredient/:ingredient',
-			this.cocktailController.getCocktailsByIngredientName
-		);
+		// this.router.get(
+		// 	'/details/ingredient/:ingredient',
+		// 	this.cocktailController.getCocktailsByIngredientName
+		// );
 
 		/** Get a cocktail by multiple ingredients */
 		this.router.get(
@@ -42,9 +42,15 @@ class CocktailRoutes {
 		);
 
 		/** Get cocktails by category */
+		// this.router.get(
+		// 	'/details/category/:category',
+		// 	this.cocktailController.getCocktailsByCategory
+		// );
+
+		/** Get cocktails by categories */
 		this.router.get(
-			'/details/category/:category',
-			this.cocktailController.getCocktailsByCategory
+			'/details/categories',
+			this.cocktailController.getCocktailsByCategories
 		);
 
 		/** Get cocktails by category */
