@@ -19,6 +19,7 @@
   "homepage": "https://github.com/arwebber/webber-cocktail-api#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "mariadb": "^2.5.5",
     "request": "^2.88.2"
   }
 }

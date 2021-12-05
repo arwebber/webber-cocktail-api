@@ -42,9 +42,8 @@ class CocktailService {
                 // Parse the response as JSON.
                 let apiResponseBody = {};
                 try {
-                    // console.log('res body', res.body);
                     apiResponseBody = JSON.parse(res.body);
-                    // console.log('parsed', apiResponseBody);
+
                     response.body = {
                         ...apiResponseBody,
                         total: apiResponseBody.drinks.length
@@ -61,7 +60,7 @@ class CocktailService {
 
     // List all cocktails by first letter
     async getCocktailsByFirstLetter(letter) {
-        return new Promise(function(resolve, reject){
+        return new Promise(function(resolve, reject) {
             let url = `${COCKTAILDB_URI}/search.php?f=${letter}`;
 
             let response = {}
@@ -94,9 +93,8 @@ class CocktailService {
                 // Parse the response as JSON.
                 let apiResponseBody = {};
                 try {
-                    // console.log('res body', res.body);
                     apiResponseBody = JSON.parse(res.body);
-                    // console.log('parsed', apiResponseBody);
+
                     response.body = {
                         ...apiResponseBody,
                         total: apiResponseBody.drinks.length
@@ -111,9 +109,213 @@ class CocktailService {
         });
     }
 
+    // Search by ingredient
+    async getCocktailsByIngredientName(ingredient) {
+        return new Promise(function(resolve, reject) {
+            let url = `${COCKTAILDB_URI}/filter.php?i=${ingredient}`;
+    
+            let response = {}
+    
+            // Options used by request
+            const options = {
+                'method': 'GET',
+                'url': url
+            };
+    
+            // Get the drink response from cocktaildb
+            request(options, function (error, res) { 
+                // Set the response status code. If there was an error, set the code to 503
+                response.status = res ? res.statusCode : 503;
+    
+                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
+                if (error) {
+                    console.log(error);
+                    response.body =  {};
+                    response.errMsg = error.toString();
+                    return resolve(response);
+                } else if (res.body === null || res.body.trim() === '') {
+                    response.body = 'No data returned';
+                    return resolve(response)
+                }
+    
+                // Set the response to 200 since there was no error.
+                response.status = res.statusCode;
+    
+                // Parse the response as JSON.
+                let apiResponseBody = {};
+                try {
+                    apiResponseBody = JSON.parse(res.body);
+
+                    response.body = {
+                        ...apiResponseBody,
+                        total: apiResponseBody.drinks.length
+                    }
+                } catch {
+                    response.body = {};
+                    response.errMsg = 'Unable to parse cocktaildb response.'
+                }
+    
+                return resolve(response);
+            });
+        });
+    }
+
+    // Filter by alcoholic
+    async getCocktailsByAlcoholic(alcoholic) {
+        return new Promise(function(resolve, reject) {
+            let url = `${COCKTAILDB_URI}/filter.php?a=${alcoholic}`;
+    
+            let response = {}
+
+            // Options used by request
+            const options = {
+                'method': 'GET',
+                'url': url
+            };
+    
+            // Get the drink response from cocktaildb
+            request(options, function (error, res) { 
+                // Set the response status code. If there was an error, set the code to 503
+                response.status = res ? res.statusCode : 503;
+    
+                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
+                if (error) {
+                    console.log(error);
+                    response.body =  {};
+                    response.errMsg = error.toString();
+                    return resolve(response);
+                } else if (res.body === null || res.body.trim() === '') {
+                    response.body = 'No data returned';
+                    return resolve(response)
+                }
+    
+                // Set the response to 200 since there was no error.
+                response.status = res.statusCode;
+    
+                // Parse the response as JSON.
+                let apiResponseBody = {};
+                try {
+                    apiResponseBody = JSON.parse(res.body);
+
+                    response.body = {
+                        ...apiResponseBody,
+                        total: apiResponseBody.drinks.length
+                    }
+                } catch {
+                    response.body = {};
+                    response.errMsg = 'Unable to parse cocktaildb response.'
+                }
+    
+                return resolve(response);
+            });
+        });
+    }
+    
+    // Filter by Category
+    async getCocktailsByCategory(category) {
+        return new Promise(function(resolve, reject) {
+            let url = `${COCKTAILDB_URI}/filter.php?c=${category}`;
+
+            let response = {}
+    
+            // Options used by request
+            const options = {
+                'method': 'GET',
+                'url': url
+            };
+    
+            // Get the drink response from cocktaildb
+            request(options, function (error, res) { 
+                // Set the response status code. If there was an error, set the code to 503
+                response.status = res ? res.statusCode : 503;
+    
+                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
+                if (error) {
+                    console.log(error);
+                    response.body =  {};
+                    response.errMsg = error.toString();
+                    return resolve(response);
+                } else if (res.body === null || res.body.trim() === '') {
+                    response.body = 'No data returned';
+                    return resolve(response)
+                }
+    
+                // Set the response to 200 since there was no error.
+                response.status = res.statusCode;
+    
+                // Parse the response as JSON.
+                let apiResponseBody = {};
+                try {
+                    apiResponseBody = JSON.parse(res.body);
+
+                    response.body = {
+                        ...apiResponseBody,
+                        total: apiResponseBody.drinks.length
+                    }
+                } catch {
+                    response.body = {};
+                    response.errMsg = 'Unable to parse cocktaildb response.'
+                }
+    
+                return resolve(response);
+            });
+        });
+    }
+    
+    // Filter by Glass
+    async getCocktailsByGlass(glass) {
+        return new Promise(function(resolve, reject) {
+            let url = `${COCKTAILDB_URI}/filter.php?g=${glass}`;
+    
+            let response = {}
+
+            // Options used by request
+            const options = {
+                'method': 'GET',
+                'url': url
+            };
+    
+            // Get the drink response from cocktaildb
+            request(options, function (error, res) { 
+                // Set the response status code. If there was an error, set the code to 503
+                response.status = res ? res.statusCode : 503;
+    
+                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
+                if (error) {
+                    console.log(error);
+                    response.body =  {};
+                    response.errMsg = error.toString();
+                    return resolve(response);
+                } else if (res.body === null || res.body.trim() === '') {
+                    response.body = 'No data returned';
+                    return resolve(response)
+                }
+    
+                // Set the response to 200 since there was no error.
+                response.status = res.statusCode;
+    
+                // Parse the response as JSON.
+                let apiResponseBody = {};
+                try {
+                    apiResponseBody = JSON.parse(res.body);
+                    
+                    response.body = {
+                        ...apiResponseBody,
+                        total: apiResponseBody.drinks.length
+                    }
+                } catch {
+                    response.body = {};
+                    response.errMsg = 'Unable to parse cocktaildb response.'
+                }
+    
+                return resolve(response);
+            });
+        });
+    }
+
     // Search ingredient by name
     async getIngredientDetailsByName(ingredientName) {
-        return new Promise(function(resolve, reject){
+        return new Promise(function(resolve, reject) {
             let url = `${COCKTAILDB_URI}/search.php?i=${ingredientName}`;
 
             let response = {}
@@ -146,9 +348,59 @@ class CocktailService {
                 // Parse the response as JSON.
                 let apiResponseBody = {};
                 try {
-                    // console.log('res body', res.body);
                     apiResponseBody = JSON.parse(res.body);
-                    // console.log('parsed', apiResponseBody);
+                    
+                    response.body = {
+                        ...apiResponseBody,
+                        total: apiResponseBody.ingredients.length
+                    }
+                } catch {
+                    response.body = {};
+                    response.errMsg = 'Unable to parse cocktaildb response.'
+                }
+
+                return resolve(response);
+            });
+        });
+    }
+
+    // Lookup ingredient by ID
+    async getIngredientDetailsById(ingredientId) {
+        return new Promise(function(resolve, reject){
+            let url = `${COCKTAILDB_URI}/lookup.php?iid=${ingredientId}`;
+
+            let response = {}
+
+            // Options used by request
+            const options = {
+                'method': 'GET',
+                'url': url
+            };
+
+            // Get the drink response from cocktaildb
+            request(options, function (error, res) { 
+                // Set the response status code. If there was an error, set the code to 503
+                response.status = res ? res.statusCode : 503;
+
+                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
+                if (error) {
+                    console.log(error);
+                    response.body =  {};
+                    response.errMsg = error.toString();
+                    return resolve(response);
+                } else if (res.body === null || res.body.trim() === '') {
+                    response.body = 'No data returned';
+                    return resolve(response)
+                }
+
+                // Set the response to 200 since there was no error.
+                response.status = res.statusCode;
+
+                // Parse the response as JSON.
+                let apiResponseBody = {};
+                try {
+                    apiResponseBody = JSON.parse(res.body);
+                    
                     response.body = {
                         ...apiResponseBody,
                         total: apiResponseBody.ingredients.length
@@ -198,62 +450,11 @@ class CocktailService {
                 // Parse the response as JSON.
                 let apiResponseBody = {};
                 try {
-                    // console.log('res body', res.body);
                     apiResponseBody = JSON.parse(res.body);
-                    // console.log('parsed', apiResponseBody);
+                    
                     response.body = {
-                        ...apiResponseBody
-                    }
-                } catch {
-                    response.body = {};
-                    response.errMsg = 'Unable to parse cocktaildb response.'
-                }
-
-                return resolve(response);
-            });
-        });
-    }
-
-    // Lookup ingredient by ID
-    async getIngredientDetailsById(ingredientId) {
-        return new Promise(function(resolve, reject){
-            let url = `${COCKTAILDB_URI}/lookup.php?iid=${ingredientId}`;
-
-            let response = {}
-
-            // Options used by request
-            const options = {
-                'method': 'GET',
-                'url': url
-            };
-
-            // Get the drink response from cocktaildb
-            request(options, function (error, res) { 
-                // Set the response status code. If there was an error, set the code to 503
-                response.status = res ? res.statusCode : 503;
-
-                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
-                if (error) {
-                    console.log(error);
-                    response.body =  {};
-                    response.errMsg = error.toString();
-                    return resolve(response);
-                } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
-                    return resolve(response)
-                }
-
-                // Set the response to 200 since there was no error.
-                response.status = res.statusCode;
-
-                // Parse the response as JSON.
-                let apiResponseBody = {};
-                try {
-                    // console.log('res body', res.body);
-                    apiResponseBody = JSON.parse(res.body);
-                    // console.log('parsed', apiResponseBody);
-                    response.body = {
-                        ...apiResponseBody
+                        ...apiResponseBody,
+                        total: apiResponseBody.drinks.length
                     }
                 } catch {
                     response.body = {};
@@ -266,7 +467,6 @@ class CocktailService {
     }
 
     // Lookup a random cocktail
-    // www.thecocktaildb.com/api/json/v1/1/random.php
     async getRandomCocktail() {
         return new Promise(function(resolve, reject){
             let url = `${COCKTAILDB_URI}/random.php`;
@@ -301,61 +501,8 @@ class CocktailService {
                 // Parse the response as JSON.
                 let apiResponseBody = {};
                 try {
-                    // console.log('res body', res.body);
                     apiResponseBody = JSON.parse(res.body);
-                    // console.log('parsed', apiResponseBody);
-                    response.body = {
-                        ...apiResponseBody
-                    }
-                } catch {
-                    response.body = {};
-                    response.errMsg = 'Unable to parse cocktaildb response.'
-                }
-
-                return resolve(response);
-            });
-        });
-    }
-
-    // Search by ingredient
-    // www.thecocktaildb.com/api/json/v1/1/filter.php?i=Gin
-    async getCocktailsByIngredientName(ingredient) {
-        return new Promise(function(resolve, reject){
-            let url = `${COCKTAILDB_URI}/filter.php?i=${ingredient}`;
-    
-            let response = {}
-    
-            // Options used by request
-            const options = {
-                'method': 'GET',
-                'url': url
-            };
-    
-            // Get the drink response from cocktaildb
-            request(options, function (error, res) { 
-                // Set the response status code. If there was an error, set the code to 503
-                response.status = res ? res.statusCode : 503;
-    
-                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
-                if (error) {
-                    console.log(error);
-                    response.body =  {};
-                    response.errMsg = error.toString();
-                    return resolve(response);
-                } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
-                    return resolve(response)
-                }
-    
-                // Set the response to 200 since there was no error.
-                response.status = res.statusCode;
-    
-                // Parse the response as JSON.
-                let apiResponseBody = {};
-                try {
-                    // console.log('res body', res.body);
-                    apiResponseBody = JSON.parse(res.body);
-                    // console.log('parsed', apiResponseBody);
+                    
                     response.body = {
                         ...apiResponseBody,
                         total: apiResponseBody.drinks.length
@@ -364,176 +511,15 @@ class CocktailService {
                     response.body = {};
                     response.errMsg = 'Unable to parse cocktaildb response.'
                 }
-    
-                return resolve(response);
-            });
-        });
-    }
-    
-    // Filter by alcoholic
-    // www.thecocktaildb.com/api/json/v1/1/filter.php?a=Alcoholic
-    async getCocktailsByAlcoholic(alcoholic) {
-        return new Promise(function(resolve, reject){
-            // TODO: validate input either alcoholic or non.
-            let url = `${COCKTAILDB_URI}/filter.php?a=${alcoholic}`;
-    
-            let response = {}
-    
-            // Options used by request
-            const options = {
-                'method': 'GET',
-                'url': url
-            };
-    
-            // Get the drink response from cocktaildb
-            request(options, function (error, res) { 
-                // Set the response status code. If there was an error, set the code to 503
-                response.status = res ? res.statusCode : 503;
-    
-                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
-                if (error) {
-                    console.log(error);
-                    response.body =  {};
-                    response.errMsg = error.toString();
-                    return resolve(response);
-                } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
-                    return resolve(response)
-                }
-    
-                // Set the response to 200 since there was no error.
-                response.status = res.statusCode;
-    
-                // Parse the response as JSON.
-                let apiResponseBody = {};
-                try {
-                    // console.log('res body', res.body);
-                    apiResponseBody = JSON.parse(res.body);
-                    // console.log('parsed', apiResponseBody);
-                    response.body = {
-                        ...apiResponseBody
-                    }
-                } catch {
-                    response.body = {};
-                    response.errMsg = 'Unable to parse cocktaildb response.'
-                }
-    
-                return resolve(response);
-            });
-        });
-    }
 
-    // Filter by Category
-    // www.thecocktaildb.com/api/json/v1/1/filter.php?c=Ordinary_Drink
-    async getCocktailsByCategory(category) {
-        return new Promise(function(resolve, reject){
-            // TODO: validate input either alcoholic or non.
-            let url = `${COCKTAILDB_URI}/filter.php?c=${category}`;
-    
-            let response = {}
-    
-            // Options used by request
-            const options = {
-                'method': 'GET',
-                'url': url
-            };
-    
-            // Get the drink response from cocktaildb
-            request(options, function (error, res) { 
-                // Set the response status code. If there was an error, set the code to 503
-                response.status = res ? res.statusCode : 503;
-    
-                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
-                if (error) {
-                    console.log(error);
-                    response.body =  {};
-                    response.errMsg = error.toString();
-                    return resolve(response);
-                } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
-                    return resolve(response)
-                }
-    
-                // Set the response to 200 since there was no error.
-                response.status = res.statusCode;
-    
-                // Parse the response as JSON.
-                let apiResponseBody = {};
-                try {
-                    // console.log('res body', res.body);
-                    apiResponseBody = JSON.parse(res.body);
-                    // console.log('parsed', apiResponseBody);
-                    response.body = {
-                        ...apiResponseBody
-                    }
-                } catch {
-                    response.body = {};
-                    response.errMsg = 'Unable to parse cocktaildb response.'
-                }
-    
-                return resolve(response);
-            });
-        });
-    }
-
-    // Filter by Glass
-    // www.thecocktaildb.com/api/json/v1/1/filter.php?g=Cocktail_glass
-    async getCocktailsByGlass(glass) {
-        return new Promise(function(resolve, reject){
-            // TODO: validate input either alcoholic or non.
-            let url = `${COCKTAILDB_URI}/filter.php?g=${glass}`;
-    
-            let response = {}
-    
-            // Options used by request
-            const options = {
-                'method': 'GET',
-                'url': url
-            };
-    
-            // Get the drink response from cocktaildb
-            request(options, function (error, res) { 
-                // Set the response status code. If there was an error, set the code to 503
-                response.status = res ? res.statusCode : 503;
-    
-                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
-                if (error) {
-                    console.log(error);
-                    response.body =  {};
-                    response.errMsg = error.toString();
-                    return resolve(response);
-                } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
-                    return resolve(response)
-                }
-    
-                // Set the response to 200 since there was no error.
-                response.status = res.statusCode;
-    
-                // Parse the response as JSON.
-                let apiResponseBody = {};
-                try {
-                    // console.log('res body', res.body);
-                    apiResponseBody = JSON.parse(res.body);
-                    // console.log('parsed', apiResponseBody);
-                    response.body = {
-                        ...apiResponseBody
-                    }
-                } catch {
-                    response.body = {};
-                    response.errMsg = 'Unable to parse cocktaildb response.'
-                }
-    
                 return resolve(response);
             });
         });
     }
 
     // List the categories, glasses, ingredients or alcoholic filters
-    // www.thecocktaildb.com/api/json/v1/1/list.php?c=list
-    async getFilterListByFilter(filter) {
+    async getFilterListByFilter(pageSize, pageIndex, filter) {
         return new Promise(function(resolve, reject){
-            // TODO: validate input either alcoholic or non.
             let filterList = '';
             switch(filter) {
                 case 'categories':
@@ -551,11 +537,21 @@ class CocktailService {
             }
 
             let url = `${COCKTAILDB_URI}/list.php?${filterList}=list`;
-    
-            console.log('searching', url);
 
             let response = {}
     
+            // Parse the page size and int
+            let pageSizeInt = parseInt(pageSize);
+            let pageIndexInt = parseInt(pageIndex);
+
+            // If a non int is passed in as the page size or index, send back a 503
+            if (isNaN(pageSizeInt) || isNaN(pageIndexInt)) {
+                response.status = 503;
+                response.body = {};
+                response.errMsg = 'Error parsing pageSize or pageIndex.';
+                return resolve(response);
+            }
+
             // Options used by request
             const options = {
                 'method': 'GET',
@@ -584,11 +580,18 @@ class CocktailService {
                 // Parse the response as JSON.
                 let apiResponseBody = {};
                 try {
-                    // console.log('res body', res.body);
                     apiResponseBody = JSON.parse(res.body);
-                    // console.log('parsed', apiResponseBody);
+                    
+                    const responseStartIndex = pageSizeInt * pageIndexInt;
+                    const responseStopIndex = responseStartIndex + pageSizeInt;
+
+                    const paginatedResponse = apiResponseBody.drinks.slice(responseStartIndex, responseStopIndex);
+
                     response.body = {
-                        ...apiResponseBody
+                        drinks: paginatedResponse,
+                        total: apiResponseBody.drinks.length,
+                        pageIndex: pageIndexInt,
+                        pageSize: pageSizeInt
                     }
                 } catch {
                     response.body = {};
@@ -597,76 +600,6 @@ class CocktailService {
     
                 return resolve(response);
             });
-        });
-    }
-
-    async getFilterListForAllFilters(filter) {
-        return new Promise(function(resolve, reject){
-            // TODO: validate input either alcoholic or non.
-            let filterList = '';
-            switch(filter) {
-                case 'categories':
-                    filterList = 'c'
-                case 'glasses':
-                    filterList = 'g'
-                case 'ingredients':
-                    filterList = 'i'
-                case 'alcoholic':
-                    filterList = 'a'
-            }
-
-            let url = `${COCKTAILDB_URI}/filter.php?${filterList}=list`;
-    
-            let response = {}
-    
-            // Options used by request
-            const options = {
-                'method': 'GET',
-                'url': url
-            };
-    
-            let ree = {};
-
-            // Get the drink response from cocktaildb
-            request(options, function (error, res) { 
-                // Set the response status code. If there was an error, set the code to 503
-                response.status = res ? res.statusCode : 503;
-    
-                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
-                if (error) {
-                    console.log(error);
-                    response.body =  {};
-                    response.errMsg = error.toString();
-                    return resolve(response);
-                } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
-                    return resolve(response)
-                }
-    
-                // Set the response to 200 since there was no error.
-                response.status = res.statusCode;
-    
-                // Parse the response as JSON.
-                let apiResponseBody = {};
-                try {
-                    // console.log('res body', res.body);
-                    apiResponseBody = JSON.parse(res.body);
-                    // console.log('parsed', apiResponseBody);
-                    response.body = {
-                        ...apiResponseBody
-                    }
-                } catch {
-                    response.body = {};
-                    response.errMsg = 'Unable to parse cocktaildb response.'
-                }
-
-                ree = {...response}
-    
-                // return resolve(response);
-            });
-
-            console.log('sending ', ree);
-
         });
     }
 }
