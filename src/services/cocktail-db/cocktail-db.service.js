@@ -41,8 +41,6 @@ class CocktailDBService {
 
             // Insert statement
             const sqlQuery = `INSERT INTO COCKTAIL (idDrink,${cocktailKeyString}) VALUES (UUID(),${sqlInserts})`;
-            
-            console.log('statement', sqlQuery)
 
             // Execute insert
             const rows = await db.query(sqlQuery, cocktailKeyValues);
@@ -108,7 +106,6 @@ class CocktailDBService {
     async deleteCocktail(cocktailId) {
         let response = {}
         try {
-            console.log('id', cocktailId);
             // Verify the request body contains the fields needed.
             if (!cocktailId || cocktailId === '') {
                 response.status = 400;
@@ -151,8 +148,6 @@ class CocktailDBService {
 
                 // Execute select
                 const rows = await db.query(sqlQuery, [`%${cocktailName}%`]);
-            
-                console.log('query', sqlQuery, cocktailName);
 
                 response.status = 200;
                 response.body = { 
@@ -184,7 +179,7 @@ class CocktailDBService {
                 const sqlQuery = `SELECT * FROM COCKTAIL WHERE strDrink LIKE ? ORDER BY dateModified DESC`;
 
                 // Execute select
-                const rows = await db.query(sqlQuery, [cocktailFirstName]);
+                const rows = await db.query(sqlQuery, [`${cocktailFirstName}%`]);
             
                 response.status = 200;
                 response.body = { 

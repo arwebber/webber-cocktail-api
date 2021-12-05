@@ -145,9 +145,6 @@ class CocktailEndpointService {
             if (userDBResponse.body.total > 0) {
                 return resolve(userDBResponse);
             }
-            
-
-            console.log('user', userDBResponse)
 
             // If there was an error with either service, response with 503 and include both responses in body.
             if (cocktailDBResponse.status != 200 || userDBResponse.status != 200) {
@@ -179,9 +176,6 @@ class CocktailEndpointService {
 
     async getAllCocktailsByIngredientNames(pageSize, pageIndex, ingredients) {
         return new Promise(async function(resolve, reject) {
-            // const cocktailService = new CocktailService();
-            // const cocktailDBService = new CocktailDBService();
-
             let response = {};
 
             // Initialize filtered drink lists
@@ -191,25 +185,25 @@ class CocktailEndpointService {
             // Loop through the ingredient list and call the cocktail db each time with a single ingredient
             for (let i = 0; i < ingredients.length; i++) {
                 // Call cocktail db service.
-                const singleIngredientCocktailDBResponse = await cocktailService.getCocktailsByIngredientName(100, 0, ingredients[i]);
+                const singleIngredientCocktailDBResponse = await cocktailService.getCocktailsByIngredientName(ingredients[i]);
                 // First set the cocktail db filtered drink list to the first reponse
                 // This is used for single ingredient response
                 if (undefined === cocktailDBFilteredDrinks) {
                     cocktailDBFilteredDrinks = singleIngredientCocktailDBResponse.body.drinks;
                 } else {
-                        // Initialize a temp variable that clones the total list of cocktail 
-                        let loopFilteredDrinks = [...cocktailDBFilteredDrinks]
-                        // Reset the filtered list array
-                        cocktailDBFilteredDrinks = [];
-                        // Loop through the cloned list of filtered drinks.
-                        loopFilteredDrinks.forEach((ing) => {
-                            singleIngredientCocktailDBResponse.body.drinks.forEach((singleIng) => {
-                                // If the latest response from cocktail db has the same drinkId that is in our cloned filtered list, add it to the total filtered list.  
-                                if (ing.idDrink === singleIng.idDrink) {
-                                    cocktailDBFilteredDrinks.push(ing);
-                                }
-                            })
-                        });
+                    // Initialize a temp variable that clones the total list of cocktail 
+                    let loopFilteredDrinks = [...cocktailDBFilteredDrinks]
+                    // Reset the filtered list array
+                    cocktailDBFilteredDrinks = [];
+                    // Loop through the cloned list of filtered drinks.
+                    loopFilteredDrinks.forEach((ing) => {
+                        singleIngredientCocktailDBResponse.body.drinks.forEach((singleIng) => {
+                            // If the latest response from cocktail db has the same drinkId that is in our cloned filtered list, add it to the total filtered list.  
+                            if (ing.idDrink === singleIng.idDrink) {
+                                cocktailDBFilteredDrinks.push(ing);
+                            }
+                        })
+                    });
                 }
             }
 
@@ -234,16 +228,6 @@ class CocktailEndpointService {
 
             const paginatedResponseBody = paginateResponse(pageSize, pageIndex, cocktailDBFilteredDrinks, userDBFilteredDBDrinks);
 
-            // response = {
-            //     status: 200,
-            //     body: {
-            //         drinks: paginatedResponseBody,
-            //         total: cocktailDBResponse.body.total + userDBResponse.body.total,
-            //         pageIndex: pageIndexInt,
-            //         pageSize: pageSizeInt
-            //     }
-            // }
-
             response = {
                 status: 200,
                 body: paginatedResponseBody.body
@@ -255,9 +239,6 @@ class CocktailEndpointService {
 
     async getAllCocktailsByCategories(pageSize, pageIndex, categories) {
         return new Promise(async function(resolve, reject) {
-            // const cocktailService = new CocktailService();
-            // const cocktailDBService = new CocktailDBService();
-
             let response = {};
 
             // Initialize filtered drink lists
@@ -447,7 +428,6 @@ function paginateResponse(pageSizeInt, pageIndexInt, array1, array2) {
         }
     }
     return responseBody;
-    // return paginatedResponseBody = combinedArray.slice(responseStartIndex, responseStopIndex);
 }
 
 module.exports = CocktailEndpointService;
