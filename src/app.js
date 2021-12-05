@@ -11,6 +11,12 @@ dotenv.config({ path: '.env' });
 		// Init express server
         const app = express();
 
+		/**
+		 * Middleware
+		 */
+		app.use(express.json());
+		// app.use(express.urlencoded({ extended: false }));
+
         // Init routes
         registerApiRoutes(app, '/api/v1');
         

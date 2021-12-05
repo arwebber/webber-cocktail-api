@@ -1,8 +1,9 @@
 const Router = require('express');
-const { CocktailController } = require('../../../controllers');
+const { CocktailController, CocktailDBController } = require('../../../controllers');
 
 class CocktailRoutes {
-	controller = new CocktailController();
+	cocktailController = new CocktailController();
+	cocktailDBController = new CocktailDBController();
 	router = Router();
 
 	constructor() {
@@ -13,67 +14,91 @@ class CocktailRoutes {
         /** Get cocktails by name */
         this.router.get(
             '/details/name/:cocktailName',
-            this.controller.getCocktailsByName
+            this.cocktailController.getCocktailsByName
         );
 
 		/** Get a specific cocktail by ID */
 		this.router.get(
 			'/details/id/:id',
-			this.controller.getCocktailById
+			this.cocktailController.getCocktailById
 		);
 
 		/** Get cocktails by first letter */
 		this.router.get(
 			'/details/firstletter/:firstLetter',
-			this.controller.getCocktailsByFirstLetter
+			this.cocktailController.getCocktailsByFirstLetter
 		);
 
 		/** Get a cocktail by ingredient */
 		this.router.get(
 			'/details/ingredient/:ingredient',
-			this.controller.getCocktailsByIngredient
+			this.cocktailController.getCocktailsByIngredientName
+		);
+
+		/** Get a cocktail by multiple ingredients */
+		this.router.get(
+			'/details/ingredients/',
+			this.cocktailController.getCocktailsByIngredientNames
 		);
 
 		/** Get cocktails by category */
 		this.router.get(
 			'/details/category/:category',
-			this.controller.getCocktailsByCategory
+			this.cocktailController.getCocktailsByCategory
 		);
 
 		/** Get cocktails by category */
 		this.router.get(
 			'/details/glass/:glass',
-			this.controller.getCocktailsByGlass
+			this.cocktailController.getCocktailsByGlass
 		);
 
 		/** Get an ingredient by name */
 		this.router.get(
 			'/ingredient/details/name/:ingredientName',
-			this.controller.getIngredientDetailsByName
+			this.cocktailController.getIngredientDetailsByName
 		);
 		
 		/** Get an ingredient by an id */
 		this.router.get(
 			'/ingredient/details/id/:ingredientId',
-			this.controller.getIngredientDetailsById
+			this.cocktailController.getIngredientDetailsById
 		);
 
 		/** Get a random cocktail */
 		this.router.get(
 			'/random',
-			this.controller.getRandomCocktail
+			this.cocktailController.getRandomCocktail
 		);
 
 		/** Get cocktails by alcololic */
 		this.router.get(
 			'/alcoholic/:alcoholic',
-			this.controller.getCocktailsByAlcoholic
+			this.cocktailController.getCocktailsByAlcoholic
 		);
 
 		/** Get a list of options for a filter */
 		this.router.get(
 			'/filter/:filter',
-			this.controller.getFilterListByFilter
+			this.cocktailController.getFilterListByFilter
+		);
+
+		/** Get a list of options for a filter */
+		this.router.post(
+			'/add',
+			this.cocktailDBController.addCocktail
+		);
+
+		/** Get a list of options for a filter */
+		this.router.put(
+			'/update',
+			this.cocktailDBController.updateCocktail
+		);
+
+		/** Get a list of options for a filter */
+		this.router.delete(
+			'/delete/:cocktailId',
+			this.cocktailDBController.deleteCocktail
 		);
     }
 }
