@@ -14,7 +14,7 @@ class CocktailController {
 
                   const response = await cocktailEndpointService.getAllCocktailsByName(pageSize, pageIndex, cocktailName);
 
-                  return res.json({response});
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
@@ -31,7 +31,7 @@ class CocktailController {
 
                   const response = await cocktailEndpointService.getAllCocktailsByFirstLetter(pageSize, pageIndex, firstLetter);
 
-                  return res.json({response});
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
@@ -44,7 +44,7 @@ class CocktailController {
 
                   const response = await cocktailEndpointService.getAllCocktailsByID(id);
 
-                  return res.json({response});
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
@@ -55,7 +55,7 @@ class CocktailController {
 		try {
                   const { ingredientName } = req.params;
                   const response = await cocktailService.getIngredientDetailsByName(ingredientName);
-                  return res.json({response});
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
@@ -66,7 +66,7 @@ class CocktailController {
 		try {
                   const { ingredientId } = req.params;
                   const response = await cocktailService.getIngredientDetailsById(ingredientId);
-                  return res.json({response});
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
@@ -77,7 +77,7 @@ class CocktailController {
 		try {
                   const response = await cocktailEndpointService.getAllRandomCocktail();
 
-                  return res.json({response});
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
@@ -99,7 +99,7 @@ class CocktailController {
                   let ingredientsArray = ingredients.split(',');
 
                   const response = await cocktailEndpointService.getAllCocktailsByIngredientNames(pageSize, pageIndex, ingredientsArray);
-                  return res.json({response});
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
@@ -121,7 +121,7 @@ class CocktailController {
                   // user db reponse
                   // const responseDB = await cocktailDBService.getCocktailsByAlcoholic(alcoholic);
 
-                  return res.json({response});
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
@@ -144,7 +144,7 @@ class CocktailController {
 
                   const response = await cocktailEndpointService.getAllCocktailsByCategories(pageSize, pageIndex, categoriesArray);
 
-                  return res.json({response});
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
@@ -161,7 +161,7 @@ class CocktailController {
 
                   const response = await cocktailEndpointService.getAllCocktailsByGlass(pageSize, pageIndex, glass);
 
-                  return res.json({response});
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
@@ -177,7 +177,7 @@ class CocktailController {
                   let pageIndex = req.query.pageIndex ? req.query.pageIndex : '0';
 
                   const response = await cocktailService.getFilterListByFilter(pageSize, pageIndex, filter);
-                  return res.json({response});
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
