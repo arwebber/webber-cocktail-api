@@ -10,7 +10,18 @@ class CocktailDBService {
         try {
             // Set the cocktail key array and string list
             const cocktailKeys = Object.keys(cocktail);
-            let cocktailKeyString = cocktailKeys.toString();
+
+            // Loop through each key to build the key string for the insert query.
+            // If the key contains a dash, format the string to add ticks.
+            let cocktailKeyString = '';
+            cocktailKeys.forEach((key, index) => {
+                let keyString = key;
+                if (key.indexOf('-') > 0) {
+                    keyString = '`'+key+'`';
+                }
+                cocktailKeyString += index === 0 ? keyString : ',' + keyString
+            })
+
             let cocktailKeyValues = [];
 
             // Verify the request body contains the fields needed.

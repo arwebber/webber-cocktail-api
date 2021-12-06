@@ -9,18 +9,6 @@ dotenv.config({ path: '.env' });
 // Startup
 (async function main() {
 	try {
-		// // Init express server
-        // const app = express();
-
-		// /**
-		//  * Middleware
-		//  */
-		// app.use(express.json());
-		// // app.use(express.urlencoded({ extended: false }));
-
-        // // Init routes
-        // registerApiRoutes(app, '/api/v1');
-        
 		// Create server
 		const app = createServer();
 
