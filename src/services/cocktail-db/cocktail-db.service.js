@@ -16,17 +16,14 @@ class CocktailDBService {
             // Verify the request body contains the fields needed.
             if (!cocktail || cocktailKeys.length === 0) {
                 response.status = 400;
-                response.body = {};
                 response.errMsg = 'Null values not allowed.'
                 return response;
             } else if (!cocktail.strDrink || cocktail.strDrink === '') {
                 response.status = 400;
-                response.body = {};
                 response.errMsg = 'Null value is not allowed for strDrink.'
                 return response;
             } else if (cocktail.idDrink) {
                 response.status = 400;
-                response.body = {};
                 response.errMsg = 'Value for idDrink is not allowed.'
                 return response;
             }
@@ -45,11 +42,12 @@ class CocktailDBService {
             // Execute insert
             const rows = await db.query(sqlQuery, cocktailKeyValues);
         
-            response.status = 200;
-            response.body = rows;
+            response = {
+                status: 200,
+                hits: rows
+            }
         } catch (error) {
             response.status = 503;
-            response.body = `ERROR: Failed to insert cocktail.`;
             response.errMsg = error.message;
         }
 
@@ -65,12 +63,10 @@ class CocktailDBService {
             // Verify the request body contains the fields needed.
             if (!cocktail || cocktailKeys.length === 0) {
                 response.status = 400;
-                response.body = {};
                 response.errMsg = 'Null values not allowed.'
                 return response;
             } else if (!cocktail.idDrink) {
                 response.status = 400;
-                response.body = {};
                 response.errMsg = 'Value for idDrink cannot be null.'
                 return response;
             }
@@ -91,12 +87,13 @@ class CocktailDBService {
             
             // Execute insert
             const rows = await db.query(sqlQuery, cocktailKeyValues);
-        
-            response.status = 200;
-            response.body = rows;
+
+            response = {
+                status: 200,
+                hits: rows
+            }
         } catch (error) {
             response.status = 503;
-            response.body = `ERROR: Failed to insert cocktail.`;
             response.errMsg = error.message;
         }
 
@@ -109,7 +106,6 @@ class CocktailDBService {
             // Verify the request body contains the fields needed.
             if (!cocktailId || cocktailId === '') {
                 response.status = 400;
-                response.body = {};
                 response.errMsg = 'Cocktail ID cannot be null.'
                 return response;
             }
@@ -120,11 +116,12 @@ class CocktailDBService {
             // Execute insert
             const rows = await db.query(sqlQuery, [cocktailId]);
         
-            response.status = 200;
-            response.body = rows;
+            response = {
+                status: 200,
+                hits: rows
+            }
         } catch (error) {
             response.status = 503;
-            response.body = `ERROR: Failed to delete cocktail.`;
             response.errMsg = error.message;
         }
 
@@ -138,7 +135,6 @@ class CocktailDBService {
                 // Verify the request body contains the fields needed.
                 if (!cocktailName) {
                     response.status = 400;
-                    response.body = {};
                     response.errMsg = 'Null values not allowed.'
                     return resolve(response);
                 }
@@ -149,14 +145,13 @@ class CocktailDBService {
                 // Execute select
                 const rows = await db.query(sqlQuery, [`%${cocktailName}%`]);
 
-                response.status = 200;
-                response.body = { 
-                    drinks: rows,
+                response = {
+                    status: 200,
+                    hits: rows,
                     total: rows.length
                 };
             } catch (error) {
                 response.status = 503;
-                response.body = `ERROR: Failed to retrieve user created cocktail.`;
                 response.errMsg = error.message;
             }
             return resolve(response);
@@ -170,7 +165,6 @@ class CocktailDBService {
                 // Verify the request body contains the fields needed.
                 if (!cocktailFirstName) {
                     response.status = 400;
-                    response.body = {};
                     response.errMsg = 'Null values not allowed.'
                     return resolve(response);
                 }
@@ -181,14 +175,13 @@ class CocktailDBService {
                 // Execute select
                 const rows = await db.query(sqlQuery, [`${cocktailFirstName}%`]);
             
-                response.status = 200;
-                response.body = { 
-                    drinks: rows,
+                response = {
+                    status: 200,
+                    hits: rows,
                     total: rows.length
                 };
             } catch (error) {
                 response.status = 503;
-                response.body = `ERROR: Failed to retrieve user created cocktail.`;
                 response.errMsg = error.message;
             }
             return resolve(response);
@@ -202,7 +195,6 @@ class CocktailDBService {
                 // Verify the request body contains the fields needed.
                 if (!cocktailId) {
                     response.status = 400;
-                    response.body = {};
                     response.errMsg = 'Null values not allowed.'
                     resolve(response);
                 }
@@ -213,14 +205,13 @@ class CocktailDBService {
                 // Execute insert
                 const rows = await db.query(sqlQuery, [cocktailId]);
             
-                response.status = 200;
-                response.body = { 
-                    drinks: rows,
+                response = {
+                    status: 200,
+                    hits: rows,
                     total: rows.length
                 };
             } catch (error) {
                 response.status = 503;
-                response.body = `ERROR: Failed to retrieve user created cocktail.`;
                 response.errMsg = error.message;
             }
 
@@ -235,7 +226,6 @@ class CocktailDBService {
                 // Verify the request body contains the fields needed.
                 if (!ingredientName || ingredientName === '') {
                     response.status = 400;
-                    response.body = {};
                     response.errMsg = 'Null values not allowed.'
                     return resolve(response);
                 }
@@ -249,14 +239,13 @@ class CocktailDBService {
                 // Execute select
                 const rows = await db.query(sqlQuery, [ingredientName]);
             
-                response.status = 200;
-                response.body = { 
-                    drinks: rows,
+                response = {
+                    status: 200,
+                    hits: rows,
                     total: rows.length
                 };
             } catch (error) {
                 response.status = 503;
-                response.body = `ERROR: Failed to retrieve user created cocktail.`;
                 response.errMsg = error.message;
             }
             return resolve(response);
@@ -270,7 +259,6 @@ class CocktailDBService {
                 // Verify the request body contains the fields needed.
                 if (!alcoholic || alcoholic === '') {
                     response.status = 400;
-                    response.body = {};
                     response.errMsg = 'Null values not allowed.'
                     return resolve(response);
                 }
@@ -281,14 +269,13 @@ class CocktailDBService {
                 // Execute select
                 const rows = await db.query(sqlQuery, [alcoholic]);
             
-                response.status = 200;
-                response.body = { 
-                    drinks: rows,
+                response = {
+                    status: 200,
+                    hits: rows,
                     total: rows.length
                 };
             } catch (error) {
                 response.status = 503;
-                response.body = `ERROR: Failed to retrieve user created cocktail.`;
                 response.errMsg = error.message;
             }
             return resolve(response);
@@ -302,7 +289,6 @@ class CocktailDBService {
                 // Verify the request body contains the fields needed.
                 if (!category || category === '') {
                     response.status = 400;
-                    response.body = {};
                     response.errMsg = 'Null values not allowed.'
                     return resolve(response);
                 }
@@ -313,14 +299,13 @@ class CocktailDBService {
                 // Execute select
                 const rows = await db.query(sqlQuery, [category]);
             
-                response.status = 200;
-                response.body = { 
-                    drinks: rows,
+                response = {
+                    status: 200,
+                    hits: rows,
                     total: rows.length
                 };
             } catch (error) {
                 response.status = 503;
-                response.body = `ERROR: Failed to retrieve user created cocktail.`;
                 response.errMsg = error.message;
             }
             return resolve(response);
@@ -334,7 +319,6 @@ class CocktailDBService {
                 // Verify the request body contains the fields needed.
                 if (!glass || glass === '') {
                     response.status = 400;
-                    response.body = {};
                     response.errMsg = 'Null values not allowed.'
                     return resolve(response);
                 }
@@ -345,14 +329,13 @@ class CocktailDBService {
                 // Execute select
                 const rows = await db.query(sqlQuery, [glass]);
             
-                response.status = 200;
-                response.body = { 
-                    drinks: rows,
+                response = {
+                    status: 200,
+                    hits: rows,
                     total: rows.length
                 };
             } catch (error) {
                 response.status = 503;
-                response.body = `ERROR: Failed to retrieve user created cocktail.`;
                 response.errMsg = error.message;
             }
             return resolve(response);
@@ -368,15 +351,14 @@ class CocktailDBService {
 
                 // Execute select
                 const rows = await db.query(sqlQuery);
-            
-                response.status = 200;
-                response.body = { 
-                    drinks: rows,
+
+                response = {
+                    status: 200,
+                    hits: rows,
                     total: rows.length
                 };
             } catch (error) {
                 response.status = 503;
-                response.body = `ERROR: Failed to retrieve user created cocktail.`;
                 response.errMsg = error.message;
             }
             return resolve(response);

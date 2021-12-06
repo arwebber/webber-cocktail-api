@@ -12,10 +12,10 @@ test('GET /details/name with default pageSize', async () => {
 		.expect(200)
 		.then((response) => {
 			// Check the response type and length.
-			expect(Array.isArray(response.body.body.drinks)).toBeTruthy();
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // We did not assgign a pageSize, expect 10 results as default.
-			expect(response.body.body.drinks.length).toEqual(10);
+			expect(response.body.hits.length).toEqual(10);
 		})
 })
 
@@ -28,10 +28,10 @@ test('GET /details/name with set pageSize', async () => {
 		.expect(200)
 		.then((response) => {
 			// Check the response type and length.
-			expect(Array.isArray(response.body.body.drinks)).toBeTruthy();
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // We assgigned a pageSize of 2, expect 2 results.
-			expect(response.body.body.drinks.length).toEqual(2);
+			expect(response.body.hits.length).toEqual(2);
 		})
 })
 
@@ -44,15 +44,15 @@ test('GET /details/id for specific cocktail', async () => {
 		.expect(200)
 		.then((response) => {
 			// Check the response type and length.
-			expect(Array.isArray(response.body.body.drinks)).toBeTruthy();
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // The drinks array should be 1
-			expect(response.body.body.drinks.length).toEqual(1);
+			expect(response.body.hits.length).toEqual(1);
 
 			// Expect the following fields to be equal
-			expect(response.body.body.drinks[0].idDrink).toBe('11118');
-			expect(response.body.body.drinks[0].strDrink).toBe('Blue Margarita');
-			expect(response.body.body.drinks[0].strAlcoholic).toBe('Alcoholic');
+			expect(response.body.hits[0].idDrink).toBe('11118');
+			expect(response.body.hits[0].strDrink).toBe('Blue Margarita');
+			expect(response.body.hits[0].strAlcoholic).toBe('Alcoholic');
 		})
 })
 
@@ -64,10 +64,10 @@ test('GET /details/firstletter with default pageSize', async () => {
 		.expect(200)
 		.then((response) => {
 			// Check the response type and length.
-			expect(Array.isArray(response.body.body.drinks)).toBeTruthy();
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // We did not assgign a pageSize, expect 10 results as default.
-			expect(response.body.body.drinks.length).toEqual(10);
+			expect(response.body.hits.length).toEqual(10);
 		})
 })
 
@@ -79,10 +79,10 @@ test('GET /details/firstletter with pageSize of 2', async () => {
 		.expect(200)
 		.then((response) => {
 			// Check the response type and length.
-			expect(Array.isArray(response.body.body.drinks)).toBeTruthy();
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // We assgigned a pageSize of 2, expect 2 results.
-			expect(response.body.body.drinks.length).toEqual(2);
+			expect(response.body.hits.length).toEqual(2);
 		})
 })
 
@@ -95,10 +95,10 @@ test('GET /details/ingredients with default pageSize', async () => {
 		.expect(200)
 		.then((response) => {
 			// Check the response type and length.
-			expect(Array.isArray(response.body.body.drinks)).toBeTruthy();
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // We did not assgign a pageSize, expect 10 results as default.
-			expect(response.body.body.drinks.length).toEqual(10);
+			expect(response.body.hits.length).toEqual(10);
 		})
 });
 
@@ -111,10 +111,10 @@ test('GET /details/ingredients with pageSize of 2', async () => {
 		.expect(200)
 		.then((response) => {
 			// Check the response type and length.
-			expect(Array.isArray(response.body.body.drinks)).toBeTruthy();
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // We did not assgign a pageSize, expect 10 results as default.
-			expect(response.body.body.drinks.length).toEqual(2);
+			expect(response.body.hits.length).toEqual(2);
 		})
 });
 
@@ -127,10 +127,10 @@ test('GET /details/ingredients with multiple ingredients', async () => {
 		.expect(200)
 		.then((response) => {
 			// Check the response type and length.
-			expect(Array.isArray(response.body.body.drinks)).toBeTruthy();
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // I know the response for 
-			expect(response.body.body.drinks.length).toEqual(1);
+			expect(response.body.hits.length).toEqual(1);
 		})
 })
 
@@ -143,10 +143,10 @@ test('GET /details/categories with default pageSize', async () => {
 		.expect(200)
 		.then((response) => {
 			// Check the response type and length.
-			expect(Array.isArray(response.body.body.drinks)).toBeTruthy();
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // We did not assgign a pageSize, expect 10 results as default.
-			expect(response.body.body.drinks.length).toEqual(10);
+			expect(response.body.hits.length).toEqual(10);
 		})
 });
 
@@ -159,10 +159,10 @@ test('GET /details/categories with pageSize of 2', async () => {
 		.expect(200)
 		.then((response) => {
 			// Check the response type and length.
-			expect(Array.isArray(response.body.body.drinks)).toBeTruthy();
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // We did not assgign a pageSize, expect 10 results as default.
-			expect(response.body.body.drinks.length).toEqual(2);
+			expect(response.body.hits.length).toEqual(2);
 		})
 });
 
@@ -176,10 +176,10 @@ test('GET /details/categories with multiple categories', async () => {
 		.expect(200)
 		.then((response) => {
 			// Check the response type and length.
-			expect(Array.isArray(response.body.body.drinks)).toBeTruthy();
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // The pageSize is 1 we expect only one result.
-			expect(response.body.body.drinks.length).toEqual(1);
+			expect(response.body.hits.length).toEqual(1);
 		})
 })
 
@@ -192,10 +192,10 @@ test('GET /details/glass with default pageSize', async () => {
 		.expect(200)
 		.then((response) => {
 			// Check the response type and length.
-			expect(Array.isArray(response.body.body.drinks)).toBeTruthy();
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // We did not assgign a pageSize, expect 10 results as default.
-			expect(response.body.body.drinks.length).toEqual(10);
+			expect(response.body.hits.length).toEqual(10);
 		})
 })
 
@@ -208,10 +208,10 @@ test('GET /details/glass with pageSize of 2', async () => {
 		.expect(200)
 		.then((response) => {
 			// Check the response type and length.
-			expect(Array.isArray(response.body.body.drinks)).toBeTruthy();
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // We assgigned a pageSize of 2, expect 2 results.
-			expect(response.body.body.drinks.length).toEqual(2);
+			expect(response.body.hits.length).toEqual(2);
 		})
 })
 
@@ -224,15 +224,15 @@ test('GET /ingredient/details/name/', async () => {
 		.expect(200)
 		.then((response) => {
 			// Check the response type and length.
-			expect(Array.isArray(response.body.body.ingredients)).toBeTruthy();
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // We are querying a single ingredient, expect only one result.
-			expect(response.body.body.ingredients.length).toEqual(1);
+			expect(response.body.hits.length).toEqual(1);
 
 			// Expect the following fields to be equal.
-			expect(response.body.body.ingredients[0].idIngredient).toBe('600');
-			expect(response.body.body.ingredients[0].strIngredient).toBe('Whiskey');
-			expect(response.body.body.ingredients[0].strType).toBe('Whisky');
+			expect(response.body.hits[0].idIngredient).toBe('600');
+			expect(response.body.hits[0].strIngredient).toBe('Whiskey');
+			expect(response.body.hits[0].strType).toBe('Whisky');
 		})
 });
 
@@ -244,15 +244,15 @@ test('GET /ingredient/details/id/', async () => {
 		.expect(200)
 		.then((response) => {
 			// Check the response type and length.
-			expect(Array.isArray(response.body.body.ingredients)).toBeTruthy();
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // We are querying a single ingredient, expect only one result.
-			expect(response.body.body.ingredients.length).toEqual(1);
+			expect(response.body.hits.length).toEqual(1);
 
 			// Expect the following fields to be equal.
-			expect(response.body.body.ingredients[0].idIngredient).toBe('552');
-			expect(response.body.body.ingredients[0].strIngredient).toBe('Elderflower cordial');
-			expect(response.body.body.ingredients[0].strType).toBe('Cordial');
+			expect(response.body.hits[0].idIngredient).toBe('552');
+			expect(response.body.hits[0].strIngredient).toBe('Elderflower cordial');
+			expect(response.body.hits[0].strType).toBe('Cordial');
 		})
 });
 
@@ -264,10 +264,10 @@ test('GET /random', async () => {
 		.expect(200)
 		.then((response) => {
 			// Check the response type and length. We do not validate data as expected data is random.
-			expect(Array.isArray(response.body.body.drinks)).toBeTruthy();
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // We are only expecting a single result from the random endpoint.
-			expect(response.body.body.drinks.length).toEqual(1);
+			expect(response.body.hits.length).toEqual(1);
 		})
 })
 
@@ -280,10 +280,10 @@ test('GET /alcohilic', async () => {
 		.expect(200)
 		.then((response) => {
 			// Check the response type and length.
-			expect(Array.isArray(response.body.body.drinks)).toBeTruthy();
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // We are querying a single ingredient, expect only one result.
-			expect(response.body.body.drinks.length).toEqual(10);
+			expect(response.body.hits.length).toEqual(10);
 		})
 });
 
@@ -296,10 +296,10 @@ test('GET /filter categories', async () => {
 		.expect(200)
 		.then((response) => {
 			// Check the response type and length.
-			expect(Array.isArray(response.body.body.drinks)).toBeTruthy();
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // We are querying a single ingredient, expect only one result.
-			expect(response.body.body.drinks.length).toBeGreaterThan(0);
+			expect(response.body.hits.length).toBeGreaterThan(0);
 		})
 });
 
@@ -311,10 +311,10 @@ test('GET /filter glasses', async () => {
 		.expect(200)
 		.then((response) => {
 			// Check the response type and length.
-			expect(Array.isArray(response.body.body.drinks)).toBeTruthy();
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // We are querying a single ingredient, expect only one result.
-			expect(response.body.body.drinks.length).toBeGreaterThan(0);
+			expect(response.body.hits.length).toBeGreaterThan(0);
 		})
 });
 
@@ -326,10 +326,10 @@ test('GET /filter ingredients', async () => {
 		.expect(200)
 		.then((response) => {
 			// Check the response type and length.
-			expect(Array.isArray(response.body.body.drinks)).toBeTruthy();
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // We are querying a single ingredient, expect only one result.
-			expect(response.body.body.drinks.length).toBeGreaterThan(0);
+			expect(response.body.hits.length).toBeGreaterThan(0);
 		})
 });
 
@@ -341,9 +341,9 @@ test('GET /filter alcoholic', async () => {
 		.expect(200)
 		.then((response) => {
 			// Check the response type and length.
-			expect(Array.isArray(response.body.body.drinks)).toBeTruthy();
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // We are querying a single ingredient, expect only one result.
-			expect(response.body.body.drinks.length).toBeGreaterThan(0);
+			expect(response.body.hits.length).toBeGreaterThan(0);
 		})
 });

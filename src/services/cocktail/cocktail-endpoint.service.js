@@ -15,7 +15,6 @@ class CocktailEndpointService {
 
             if (!cocktailName) {
                 response.status = 503;
-                response.body = {};
                 response.errMsg = 'Cocktail name cannot be blank.';
                 return resolve(response);
             }
@@ -27,7 +26,6 @@ class CocktailEndpointService {
             // If a non int is passed in as the page size or index, send back a 503.
             if (isNaN(pageSizeInt) || isNaN(pageIndexInt)) {
                 response.status = 503;
-                response.body = {};
                 response.errMsg = 'Error parsing pageSize or pageIndex.';
                 return resolve(response);
             }
@@ -42,22 +40,20 @@ class CocktailEndpointService {
             if (cocktailDBResponse.status != 200 || userDBResponse.status != 200) {
                 response = {
                     status: 503,
-                    body: {
-                        cocktailDB: {
-                            ...cocktailDBResponse
-                        },
-                        userDB: {
-                            ...cocktailDBResponse
-                        }
+                    cocktailDB: {
+                        ...cocktailDBResponse
+                    },
+                    userDB: {
+                        ...cocktailDBResponse
                     }
                 }
             }
 
-            const paginatedResponseBody = paginateResponse(pageSize, pageIndex, cocktailDBResponse.body.drinks, userDBResponse.body.drinks);
+            const paginatedResponseBody = paginateResponse(pageSize, pageIndex, cocktailDBResponse.hits, userDBResponse.hits);
 
             response = {
                 status: 200,
-                body: paginatedResponseBody.body
+                ...paginatedResponseBody
             }
 
             return resolve(response);
@@ -70,7 +66,6 @@ class CocktailEndpointService {
 
             if (!cocktailFirstLetter) {
                 response.status = 503;
-                response.body = {};
                 response.errMsg = 'Cocktail first letter cannot be blank.';
                 return resolve(response);
             }
@@ -82,7 +77,6 @@ class CocktailEndpointService {
             // If a non int is passed in as the page size or index, send back a 503.
             if (isNaN(pageSizeInt) || isNaN(pageIndexInt)) {
                 response.status = 503;
-                response.body = {};
                 response.errMsg = 'Error parsing pageSize or pageIndex.';
                 return resolve(response);
             }
@@ -97,22 +91,20 @@ class CocktailEndpointService {
             if (cocktailDBResponse.status != 200 || userDBResponse.status != 200) {
                 response = {
                     status: 503,
-                    body: {
-                        cocktailDB: {
-                            ...cocktailDBResponse
-                        },
-                        userDB: {
-                            ...cocktailDBResponse
-                        }
+                    cocktailDB: {
+                        ...cocktailDBResponse
+                    },
+                    userDB: {
+                        ...cocktailDBResponse
                     }
                 }
             }
 
-            const paginatedResponseBody = paginateResponse(pageSize, pageIndex, cocktailDBResponse.body.drinks, userDBResponse.body.drinks);
+            const paginatedResponseBody = paginateResponse(pageSize, pageIndex, cocktailDBResponse.hits, userDBResponse.hits);
 
             response = {
                 status: 200,
-                body: paginatedResponseBody.body
+                ...paginatedResponseBody
             }
 
             return resolve(response);
@@ -125,7 +117,6 @@ class CocktailEndpointService {
 
             if (!cocktailId) {
                 response.status = 503;
-                response.body = {};
                 response.errMsg = 'Cocktail first letter cannot be blank.';
                 return resolve(response);
             }
@@ -134,7 +125,7 @@ class CocktailEndpointService {
             const cocktailDBResponse = await cocktailService.getCocktailById(cocktailId);
 
             // If there was a hit on the ID for the cocktail db api, return that cocktail.
-            if (cocktailDBResponse.body.total > 0) {
+            if (cocktailDBResponse.total > 0) {
                 return resolve(cocktailDBResponse);
             }
 
@@ -142,7 +133,7 @@ class CocktailEndpointService {
             const userDBResponse = await cocktailDBService.getCocktailById(cocktailId);
 
             // If there was a hit on the ID for the cocktail db api, return that cocktail.
-            if (userDBResponse.body.total > 0) {
+            if (userDBResponse.total > 0) {
                 return resolve(userDBResponse);
             }
 
@@ -150,13 +141,11 @@ class CocktailEndpointService {
             if (cocktailDBResponse.status != 200 || userDBResponse.status != 200) {
                 response = {
                     status: 503,
-                    body: {
-                        cocktailDB: {
-                            ...cocktailDBResponse
-                        },
-                        userDB: {
-                            ...cocktailDBResponse
-                        }
+                    cocktailDB: {
+                        ...cocktailDBResponse
+                    },
+                    userDB: {
+                        ...cocktailDBResponse
                     }
                 }
             }
@@ -164,10 +153,8 @@ class CocktailEndpointService {
             // There were no cocktails found
             response = {
                 status: 200,
-                body: {
-                    drinks: {},
-                    total: 0
-                }
+                hits: [],
+                total: 0
             }
 
             return resolve(response);
@@ -189,7 +176,7 @@ class CocktailEndpointService {
                 // First set the cocktail db filtered drink list to the first reponse
                 // This is used for single ingredient response
                 if (undefined === cocktailDBFilteredDrinks) {
-                    cocktailDBFilteredDrinks = singleIngredientCocktailDBResponse.body.drinks;
+                    cocktailDBFilteredDrinks = singleIngredientCocktailDBResponse.hits;
                 } else {
                     // Initialize a temp variable that clones the total list of cocktail 
                     let loopFilteredDrinks = [...cocktailDBFilteredDrinks]
@@ -197,7 +184,7 @@ class CocktailEndpointService {
                     cocktailDBFilteredDrinks = [];
                     // Loop through the cloned list of filtered drinks.
                     loopFilteredDrinks.forEach((ing) => {
-                        singleIngredientCocktailDBResponse.body.drinks.forEach((singleIng) => {
+                        singleIngredientCocktailDBResponse.hits.forEach((singleIng) => {
                             // If the latest response from cocktail db has the same drinkId that is in our cloned filtered list, add it to the total filtered list.  
                             if (ing.idDrink === singleIng.idDrink) {
                                 cocktailDBFilteredDrinks.push(ing);
@@ -212,12 +199,12 @@ class CocktailEndpointService {
                 const singleIngredientUserDBResponse = await cocktailDBService.getCocktailsByIngredientName(ingredients[i]);
                 
                 if (undefined === userDBFilteredDBDrinks) {
-                    userDBFilteredDBDrinks = singleIngredientUserDBResponse.body.drinks;
+                    userDBFilteredDBDrinks = singleIngredientUserDBResponse.hits;
                 } else {
                         let loopFilteredDrinks = [...userDBFilteredDBDrinks]
                         userDBFilteredDBDrinks = [];
                         loopFilteredDrinks.forEach((ing) => {
-                            singleIngredientUserDBResponse.body.drinks.forEach((singleIng) => {
+                            singleIngredientUserDBResponse.hits.forEach((singleIng) => {
                                     if (ing.idDrink === singleIng.idDrink) {
                                         userDBFilteredDBDrinks.push(ing);
                                     }
@@ -230,7 +217,7 @@ class CocktailEndpointService {
 
             response = {
                 status: 200,
-                body: paginatedResponseBody.body
+                ...paginatedResponseBody
             }
 
             return resolve(response);
@@ -250,8 +237,9 @@ class CocktailEndpointService {
                 // Call cocktail db service.
                 const singleIngredientCocktailDBResponse = await cocktailService.getCocktailsByCategory(categories[i]);
 
-                // Push all di
-                singleIngredientCocktailDBResponse.body.drinks.forEach((singleIng) => {
+                // if (singleIngredientCocktailDBResponse.hits)
+                
+                singleIngredientCocktailDBResponse.hits.forEach((singleIng) => {
                     cocktailDBCategoryDrinks.push(singleIng);
                 });
             }
@@ -262,7 +250,7 @@ class CocktailEndpointService {
                 const singleIngredientCocktailDBResponse = await cocktailDBService.getCocktailsByCategory(categories[i]);
 
                 // Push all di
-                singleIngredientCocktailDBResponse.body.drinks.forEach((singleIng) => {
+                singleIngredientCocktailDBResponse.hits.forEach((singleIng) => {
                     userDBCategoryDrinks.push(singleIng);
                 });
             }
@@ -271,7 +259,7 @@ class CocktailEndpointService {
 
             response = {
                 status: 200,
-                body: paginatedResponseBody.body
+                ...paginatedResponseBody
             }
 
             return resolve(response);
@@ -284,7 +272,6 @@ class CocktailEndpointService {
 
             if (!alcoholic) {
                 response.status = 503;
-                response.body = {};
                 response.errMsg = 'Cocktail alcoholic type cannot be blank.';
                 return resolve(response);
             }
@@ -296,7 +283,6 @@ class CocktailEndpointService {
             // If a non int is passed in as the page size or index, send back a 503.
             if (isNaN(pageSizeInt) || isNaN(pageIndexInt)) {
                 response.status = 503;
-                response.body = {};
                 response.errMsg = 'Error parsing pageSize or pageIndex.';
                 return resolve(response);
             }
@@ -311,22 +297,20 @@ class CocktailEndpointService {
             if (cocktailDBResponse.status != 200 || userDBResponse.status != 200) {
                 response = {
                     status: 503,
-                    body: {
-                        cocktailDB: {
-                            ...cocktailDBResponse
-                        },
-                        userDB: {
-                            ...cocktailDBResponse
-                        }
+                    cocktailDB: {
+                        ...cocktailDBResponse
+                    },
+                    userDB: {
+                        ...cocktailDBResponse
                     }
                 }
             }
 
-            const paginatedResponseBody = paginateResponse(pageSize, pageIndex, cocktailDBResponse.body.drinks, userDBResponse.body.drinks);
+            const paginatedResponseBody = paginateResponse(pageSize, pageIndex, cocktailDBResponse.hits, userDBResponse.hits);
 
             response = {
                 status: 200,
-                body: paginatedResponseBody.body
+                ...paginatedResponseBody
             }
 
             return resolve(response);
@@ -339,7 +323,6 @@ class CocktailEndpointService {
 
             if (!glass) {
                 response.status = 503;
-                response.body = {};
                 response.errMsg = 'Cocktail glass type cannot be blank.';
                 return resolve(response);
             }
@@ -351,7 +334,6 @@ class CocktailEndpointService {
             // If a non int is passed in as the page size or index, send back a 503.
             if (isNaN(pageSizeInt) || isNaN(pageIndexInt)) {
                 response.status = 503;
-                response.body = {};
                 response.errMsg = 'Error parsing pageSize or pageIndex.';
                 return resolve(response);
             }
@@ -366,22 +348,20 @@ class CocktailEndpointService {
             if (cocktailDBResponse.status != 200 || userDBResponse.status != 200) {
                 response = {
                     status: 503,
-                    body: {
-                        cocktailDB: {
-                            ...cocktailDBResponse
-                        },
-                        userDB: {
-                            ...cocktailDBResponse
-                        }
+                    cocktailDB: {
+                        ...cocktailDBResponse
+                    },
+                    userDB: {
+                        ...cocktailDBResponse
                     }
                 }
             }
 
-            const paginatedResponseBody = paginateResponse(pageSize, pageIndex, cocktailDBResponse.body.drinks, userDBResponse.body.drinks);
+            const paginatedResponseBody = paginateResponse(pageSize, pageIndex, cocktailDBResponse.hits, userDBResponse.hits);
 
             response = {
                 status: 200,
-                body: paginatedResponseBody.body
+                ...paginatedResponseBody
             }
 
             return resolve(response);
@@ -420,12 +400,10 @@ function paginateResponse(pageSizeInt, pageIndexInt, array1, array2) {
     const responseStopIndex = responseStartIndex + pageSizeInt;
 
     responseBody = {
-        body: {
-            drinks: combinedArray.slice(responseStartIndex, responseStopIndex),
-            total: combinedArrayLength,
-            pageIndex: pageIndexInt,
-            pageSize: pageSizeInt
-        }
+        hits: combinedArray.slice(responseStartIndex, responseStopIndex),
+        total: combinedArrayLength,
+        pageIndex: pageIndexInt,
+        pageSize: pageSizeInt
     }
     return responseBody;
 }

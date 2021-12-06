@@ -7,7 +7,11 @@ let COCKTAILDB_URI = process.env.COCKTAILDB_URI;
 
 class CocktailService {
 
-    // Search cocktail by name
+    /**
+     * Get cocktails from the cocktaildb api by name
+     * @param {string} name 
+     * @returns reponse
+     */
     async getCocktailsByName(name) {
         return new Promise(function(resolve, reject){
             let url = `${COCKTAILDB_URI}/search.php?s=${name}`;
@@ -28,11 +32,10 @@ class CocktailService {
                 // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
                 if (error) {
                     console.log(error);
-                    response.body =  {};
                     response.errMsg = error.toString();
                     return resolve(response);
                 } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
+                    response.hits = [];
                     return resolve(response)
                 }
 
@@ -44,12 +47,12 @@ class CocktailService {
                 try {
                     apiResponseBody = JSON.parse(res.body);
 
-                    response.body = {
-                        ...apiResponseBody,
+                    response = {
+                        ...response,
+                        hits: apiResponseBody.drinks,
                         total: apiResponseBody.drinks.length
                     }
                 } catch {
-                    response.body = {};
                     response.errMsg = 'Unable to parse cocktaildb response.'
                 }
 
@@ -79,11 +82,10 @@ class CocktailService {
                 // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
                 if (error) {
                     console.log(error);
-                    response.body =  {};
                     response.errMsg = error.toString();
                     return resolve(response);
                 } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
+                    response.hits = [];
                     return resolve(response)
                 }
 
@@ -95,12 +97,12 @@ class CocktailService {
                 try {
                     apiResponseBody = JSON.parse(res.body);
 
-                    response.body = {
-                        ...apiResponseBody,
+                    response = {
+                        ...response,
+                        hits: apiResponseBody.drinks,
                         total: apiResponseBody.drinks.length
                     }
                 } catch {
-                    response.body = {};
                     response.errMsg = 'Unable to parse cocktaildb response.'
                 }
 
@@ -130,11 +132,10 @@ class CocktailService {
                 // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
                 if (error) {
                     console.log(error);
-                    response.body =  {};
                     response.errMsg = error.toString();
                     return resolve(response);
                 } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
+                    response.hits = [];
                     return resolve(response)
                 }
     
@@ -146,12 +147,12 @@ class CocktailService {
                 try {
                     apiResponseBody = JSON.parse(res.body);
 
-                    response.body = {
-                        ...apiResponseBody,
+                    response = {
+                        ...response,
+                        hits: apiResponseBody.drinks,
                         total: apiResponseBody.drinks.length
                     }
                 } catch {
-                    response.body = {};
                     response.errMsg = 'Unable to parse cocktaildb response.'
                 }
     
@@ -181,11 +182,10 @@ class CocktailService {
                 // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
                 if (error) {
                     console.log(error);
-                    response.body =  {};
                     response.errMsg = error.toString();
                     return resolve(response);
                 } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
+                    response.hits = [];
                     return resolve(response)
                 }
     
@@ -197,12 +197,12 @@ class CocktailService {
                 try {
                     apiResponseBody = JSON.parse(res.body);
 
-                    response.body = {
-                        ...apiResponseBody,
+                    response = {
+                        ...response,
+                        hits: apiResponseBody.drinks,
                         total: apiResponseBody.drinks.length
                     }
                 } catch {
-                    response.body = {};
                     response.errMsg = 'Unable to parse cocktaildb response.'
                 }
     
@@ -232,11 +232,10 @@ class CocktailService {
                 // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
                 if (error) {
                     console.log(error);
-                    response.body =  {};
                     response.errMsg = error.toString();
                     return resolve(response);
                 } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
+                    response.hits = [];
                     return resolve(response)
                 }
     
@@ -248,12 +247,12 @@ class CocktailService {
                 try {
                     apiResponseBody = JSON.parse(res.body);
 
-                    response.body = {
-                        ...apiResponseBody,
+                    response = {
+                        ...response,
+                        hits: apiResponseBody.drinks,
                         total: apiResponseBody.drinks.length
                     }
                 } catch {
-                    response.body = {};
                     response.errMsg = 'Unable to parse cocktaildb response.'
                 }
     
@@ -283,11 +282,10 @@ class CocktailService {
                 // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
                 if (error) {
                     console.log(error);
-                    response.body =  {};
                     response.errMsg = error.toString();
                     return resolve(response);
                 } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
+                    response.hits = [];
                     return resolve(response)
                 }
     
@@ -299,12 +297,12 @@ class CocktailService {
                 try {
                     apiResponseBody = JSON.parse(res.body);
                     
-                    response.body = {
-                        ...apiResponseBody,
+                    response = {
+                        ...response,
+                        hits: apiResponseBody.drinks,
                         total: apiResponseBody.drinks.length
                     }
                 } catch {
-                    response.body = {};
                     response.errMsg = 'Unable to parse cocktaildb response.'
                 }
     
@@ -334,28 +332,24 @@ class CocktailService {
                 // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
                 if (error) {
                     console.log(error);
-                    response.body =  {};
                     response.errMsg = error.toString();
                     return resolve(response);
                 } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
+                    response.hits = [];
                     return resolve(response)
                 }
-
-                // Set the response to 200 since there was no error.
-                response.status = res.statusCode;
 
                 // Parse the response as JSON.
                 let apiResponseBody = {};
                 try {
                     apiResponseBody = JSON.parse(res.body);
                     
-                    response.body = {
-                        ...apiResponseBody,
+                    response = {
+                        ...response,
+                        hits: apiResponseBody.ingredients,
                         total: apiResponseBody.ingredients.length
                     }
                 } catch {
-                    response.body = {};
                     response.errMsg = 'Unable to parse cocktaildb response.'
                 }
 
@@ -385,11 +379,10 @@ class CocktailService {
                 // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
                 if (error) {
                     console.log(error);
-                    response.body =  {};
                     response.errMsg = error.toString();
                     return resolve(response);
                 } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
+                    response.hits = [];
                     return resolve(response)
                 }
 
@@ -401,12 +394,12 @@ class CocktailService {
                 try {
                     apiResponseBody = JSON.parse(res.body);
                     
-                    response.body = {
-                        ...apiResponseBody,
+                    response = {
+                        ...response,
+                        hits: apiResponseBody.ingredients,
                         total: apiResponseBody.ingredients.length
                     }
                 } catch {
-                    response.body = {};
                     response.errMsg = 'Unable to parse cocktaildb response.'
                 }
 
@@ -436,11 +429,10 @@ class CocktailService {
                 // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
                 if (error) {
                     console.log(error);
-                    response.body =  {};
                     response.errMsg = error.toString();
                     return resolve(response);
                 } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
+                    response.hits = [];
                     return resolve(response)
                 }
 
@@ -452,12 +444,12 @@ class CocktailService {
                 try {
                     apiResponseBody = JSON.parse(res.body);
                     
-                    response.body = {
-                        ...apiResponseBody,
+                    response = {
+                        ...response,
+                        hits: apiResponseBody.drinks,
                         total: apiResponseBody.drinks.length
                     }
                 } catch {
-                    response.body = {};
                     response.errMsg = 'Unable to parse cocktaildb response.'
                 }
 
@@ -487,11 +479,10 @@ class CocktailService {
                 // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
                 if (error) {
                     console.log(error);
-                    response.body =  {};
                     response.errMsg = error.toString();
                     return resolve(response);
                 } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
+                    response.hits = [];
                     return resolve(response)
                 }
 
@@ -503,12 +494,12 @@ class CocktailService {
                 try {
                     apiResponseBody = JSON.parse(res.body);
                     
-                    response.body = {
-                        ...apiResponseBody,
+                    response = {
+                        ...response,
+                        hits: apiResponseBody.drinks,
                         total: apiResponseBody.drinks.length
                     }
                 } catch {
-                    response.body = {};
                     response.errMsg = 'Unable to parse cocktaildb response.'
                 }
 
@@ -547,7 +538,6 @@ class CocktailService {
             // If a non int is passed in as the page size or index, send back a 503
             if (isNaN(pageSizeInt) || isNaN(pageIndexInt)) {
                 response.status = 503;
-                response.body = {};
                 response.errMsg = 'Error parsing pageSize or pageIndex.';
                 return resolve(response);
             }
@@ -566,11 +556,10 @@ class CocktailService {
                 // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
                 if (error) {
                     console.log(error);
-                    response.body =  {};
                     response.errMsg = error.toString();
                     return resolve(response);
                 } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
+                    response.hits = [];
                     return resolve(response)
                 }
     
@@ -587,14 +576,14 @@ class CocktailService {
 
                     const paginatedResponse = apiResponseBody.drinks.slice(responseStartIndex, responseStopIndex);
 
-                    response.body = {
-                        drinks: paginatedResponse,
+                    response = {
+                        ...response,
+                        hits: paginatedResponse,
                         total: apiResponseBody.drinks.length,
                         pageIndex: pageIndexInt,
                         pageSize: pageSizeInt
                     }
                 } catch {
-                    response.body = {};
                     response.errMsg = 'Unable to parse cocktaildb response.'
                 }
     
