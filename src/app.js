@@ -6,6 +6,9 @@ const createServer = require('./server');
 // Configure the env file
 dotenv.config({ path: '.env' });
 
+// Set port from env file - default to 3000
+const PORT = process.env.PORT || '3000';
+
 // Startup
 (async function main() {
 	try {
@@ -13,7 +16,7 @@ dotenv.config({ path: '.env' });
 		const app = createServer();
 
 		// Start express server
-		app.listen(process.env.NODE_PORT, callBackLog);
+		app.listen(PORT, callBackLog);
 	} catch (err) {
 		console.log(err.stack)
 	}
