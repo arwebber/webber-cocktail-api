@@ -49,8 +49,8 @@ class CocktailAPIService {
 
                     response = {
                         ...response,
-                        hits: apiResponseBody.drinks,
-                        total: apiResponseBody.drinks.length
+                        hits: apiResponseBody.drinks != null ? apiResponseBody.drinks : [],
+                        total: apiResponseBody.drinks != null ? apiResponseBody.drinks.length : 0
                     }
                 } catch {
                     response.errMsg = 'Unable to parse cocktaildb response.'
@@ -99,8 +99,8 @@ class CocktailAPIService {
 
                     response = {
                         ...response,
-                        hits: apiResponseBody.drinks,
-                        total: apiResponseBody.drinks.length
+                        hits: apiResponseBody.drinks != null ? apiResponseBody.drinks : [],
+                        total: apiResponseBody.drinks != null ? apiResponseBody.drinks.length : 0
                     }
                 } catch {
                     response.errMsg = 'Unable to parse cocktaildb response.'
@@ -149,8 +149,8 @@ class CocktailAPIService {
 
                     response = {
                         ...response,
-                        hits: apiResponseBody.drinks,
-                        total: apiResponseBody.drinks.length
+                        hits: apiResponseBody.drinks != null ? apiResponseBody.drinks : [],
+                        total: apiResponseBody.drinks != null ? apiResponseBody.drinks.length : 0
                     }
                 } catch {
                     response.errMsg = 'Unable to parse cocktaildb response.'
@@ -199,8 +199,8 @@ class CocktailAPIService {
 
                     response = {
                         ...response,
-                        hits: apiResponseBody.drinks,
-                        total: apiResponseBody.drinks.length
+                        hits: apiResponseBody.drinks != null ? apiResponseBody.drinks : [],
+                        total: apiResponseBody.drinks != null ? apiResponseBody.drinks.length : 0
                     }
                 } catch {
                     response.errMsg = 'Unable to parse cocktaildb response.'
@@ -249,8 +249,8 @@ class CocktailAPIService {
 
                     response = {
                         ...response,
-                        hits: apiResponseBody.drinks,
-                        total: apiResponseBody.drinks.length
+                        hits: apiResponseBody.drinks != null ? apiResponseBody.drinks : [],
+                        total: apiResponseBody.drinks != null ? apiResponseBody.drinks.length : 0
                     }
                 } catch {
                     response.errMsg = 'Unable to parse cocktaildb response.'
@@ -299,8 +299,8 @@ class CocktailAPIService {
                     
                     response = {
                         ...response,
-                        hits: apiResponseBody.drinks,
-                        total: apiResponseBody.drinks.length
+                        hits: apiResponseBody.drinks != null ? apiResponseBody.drinks : [],
+                        total: apiResponseBody.drinks != null ? apiResponseBody.drinks.length : 0
                     }
                 } catch {
                     response.errMsg = 'Unable to parse cocktaildb response.'
@@ -346,8 +346,8 @@ class CocktailAPIService {
                     
                     response = {
                         ...response,
-                        hits: apiResponseBody.ingredients,
-                        total: apiResponseBody.ingredients.length
+                        hits: apiResponseBody.ingredients != null ? apiResponseBody.ingredients : [],
+                        total: apiResponseBody.ingredients != null ? apiResponseBody.ingredients.length : 0
                     }
                 } catch {
                     response.errMsg = 'Unable to parse cocktaildb response.'
@@ -396,8 +396,8 @@ class CocktailAPIService {
                     
                     response = {
                         ...response,
-                        hits: apiResponseBody.ingredients,
-                        total: apiResponseBody.ingredients.length
+                        hits: apiResponseBody.ingredients != null ? apiResponseBody.ingredients : [],
+                        total: apiResponseBody.ingredients != null ? apiResponseBody.ingredients.length : 0
                     }
                 } catch {
                     response.errMsg = 'Unable to parse cocktaildb response.'
@@ -446,8 +446,8 @@ class CocktailAPIService {
                     
                     response = {
                         ...response,
-                        hits: apiResponseBody.drinks,
-                        total: apiResponseBody.drinks.length
+                        hits: apiResponseBody.drinks != null ? apiResponseBody.drinks : [],
+                        total: apiResponseBody.drinks != null ? apiResponseBody.drinks.length : 0,
                     }
                 } catch {
                     response.errMsg = 'Unable to parse cocktaildb response.'
@@ -496,8 +496,8 @@ class CocktailAPIService {
                     
                     response = {
                         ...response,
-                        hits: apiResponseBody.drinks,
-                        total: apiResponseBody.drinks.length
+                        hits: apiResponseBody.drinks != null ? apiResponseBody.drinks : [],
+                        total: apiResponseBody.drinks != null ? apiResponseBody.drinks.length : 0,
                     }
                 } catch {
                     response.errMsg = 'Unable to parse cocktaildb response.'
@@ -574,12 +574,12 @@ class CocktailAPIService {
                     const responseStartIndex = pageSizeInt * pageIndexInt;
                     const responseStopIndex = responseStartIndex + pageSizeInt;
 
-                    const paginatedResponse = apiResponseBody.drinks.slice(responseStartIndex, responseStopIndex);
+                    const paginatedResponse = apiResponseBody.drinks != null ? apiResponseBody.drinks.slice(responseStartIndex, responseStopIndex) : [];
 
                     response = {
                         ...response,
                         hits: paginatedResponse,
-                        total: apiResponseBody.drinks.length,
+                        total: apiResponseBody.drinks != null ? apiResponseBody.drinks.length : 0,
                         pageIndex: pageIndexInt,
                         pageSize: pageSizeInt
                     }
