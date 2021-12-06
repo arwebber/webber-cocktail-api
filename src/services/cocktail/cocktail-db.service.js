@@ -5,6 +5,11 @@ const db = require('../../../db/database');
 dotenv.config({ path: '.env' });
 
 class CocktailDBService {
+    /**
+     * Add a cocktail to the user cocktail database.
+     * @param {object} cocktail 
+     * @returns response
+     */
     async addCocktail(cocktail) {
         let response = {}
         try {
@@ -65,6 +70,12 @@ class CocktailDBService {
         return response;
     }
 
+    /**
+     * Update a cocktail to the user cocktail database.
+     * Can be partial or full update.
+     * @param {object} cocktail 
+     * @returns response
+     */
     async updateCocktail(cocktail) {
         let response = {}
         try {
@@ -111,6 +122,11 @@ class CocktailDBService {
         return response;
     }
 
+    /**
+     * Delete a cocktail to the user cocktail database.
+     * @param {string} cocktailId 
+     * @returns response
+     */
     async deleteCocktail(cocktailId) {
         let response = {}
         try {
@@ -139,6 +155,11 @@ class CocktailDBService {
         return response;
     }
 
+    /**
+     * Get cocktails from the user db by name.
+     * @param {string} cocktailName
+     * @returns response.
+     */
     async getCocktailsByName(cocktailName) {
         return new Promise(async function(resolve, reject) {
             let response = {}
@@ -169,12 +190,17 @@ class CocktailDBService {
         });
     }
 
-    async getCocktailsByFirstLetter(cocktailFirstName) {
+    /**
+     * Get cocktails from the user db by first letter.
+     * @param {string} cocktailFirstLetter
+     * @returns response.
+     */
+    async getCocktailsByFirstLetter(cocktailFirstLetter) {
         return new Promise(async function(resolve, reject) {
             let response = {}
             try {
                 // Verify the request body contains the fields needed.
-                if (!cocktailFirstName) {
+                if (!cocktailFirstLetter) {
                     response.status = 400;
                     response.errMsg = 'Null values not allowed.'
                     return resolve(response);
@@ -184,7 +210,7 @@ class CocktailDBService {
                 const sqlQuery = `SELECT * FROM COCKTAIL WHERE strDrink LIKE ? ORDER BY dateModified DESC`;
 
                 // Execute select
-                const rows = await db.query(sqlQuery, [`${cocktailFirstName}%`]);
+                const rows = await db.query(sqlQuery, [`${cocktailFirstLetter}%`]);
             
                 response = {
                     status: 200,
@@ -199,6 +225,11 @@ class CocktailDBService {
         });
     }
 
+    /**
+     * Get cocktails from the user db by cocktail id.
+     * @param {string} cocktailId
+     * @returns response.
+     */
     async getCocktailById(cocktailId) {
         return new Promise(async function(resolve, reject) { 
             let response = {}
@@ -230,6 +261,11 @@ class CocktailDBService {
         })
     }
 
+    /**
+     * Get cocktails from the user db by ingredient name.
+     * @param {string} ingredientName
+     * @returns response.
+     */
     async getCocktailsByIngredientName(ingredientName) {
         return new Promise(async function(resolve, reject) {
             let response = {}
@@ -263,6 +299,11 @@ class CocktailDBService {
         });
     }
 
+    /**
+     * Get cocktails from the user db by alcoholic type.
+     * @param {string} alcoholic
+     * @returns response.
+     */
     async getCocktailsByAlcoholic(alcoholic) {
         return new Promise(async function(resolve, reject) {
             let response = {}
@@ -293,6 +334,11 @@ class CocktailDBService {
         });
     }
 
+    /**
+     * Get cocktails from the user db by category.
+     * @param {string} category
+     * @returns response.
+     */
     async getCocktailsByCategory(category) {
         return new Promise(async function(resolve, reject) {
             let response = {}
@@ -323,6 +369,11 @@ class CocktailDBService {
         });
     }
 
+    /**
+     * Get cocktails from the user db by glass.
+     * @param {string} glass
+     * @returns response.
+     */
     async getCocktailsByGlass(glass) {
         return new Promise(async function(resolve, reject) {
             let response = {}
@@ -353,6 +404,10 @@ class CocktailDBService {
         });
     }
 
+    /**
+     * Get a random cocktail from the user db.
+     * @returns response.
+     */
     async getRandomCocktail() {
         return new Promise(async function(resolve, reject) {
             let response = {}

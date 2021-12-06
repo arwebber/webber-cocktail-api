@@ -4,7 +4,7 @@ const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 
 function createServer() {
-    // Init express server
+    // Initialize express server
     const app = express();
     app.use(express.json());
 
@@ -14,39 +14,38 @@ function createServer() {
         next();
     });
 
-    /**
-     * Swagger doc options
-     */
+    // Swagger options
     const options = {
         definition: {
-        openapi: "3.0.0",
-        info: {
-            title: "Cocktail DB Express API Wrapper with Swagger Documentation",
-            version: "0.1.0",
-            description:
-                "The documentation for the Cocktail DB Wrapper API",
-            license: {
-            name: "MIT",
-            url: "https://spdx.org/licenses/MIT.html",
+            openapi: "3.0.0",
+            info: {
+                title: "Cocktail DB Express API Wrapper with Swagger Documentation",
+                version: "0.1.0",
+                description:
+                    "The documentation for the Cocktail DB Wrapper API",
+                license: {
+                    name: "MIT",
+                    url: "https://spdx.org/licenses/MIT.html",
+                },
+                contact: {
+                    name: "Andrew Webber",
+                    url: "https://github.com/arwebber/webber-cocktail-api",
+                    email: "webber.andrewr@gmail.com",
+                },
             },
-            contact: {
-            name: "Andrew Webber",
-            url: "https://github.com/arwebber/webber-cocktail-api",
-            email: "webber.andrewr@gmail.com",
-            },
-        },
-        servers: [
-            {
-            url: "https://webber-cocktail-api.herokuapp.com/",
-            },
-            {
-            url: "http://localhost:3000",
-            },
-        ],
+            servers: [
+                {
+                    url: "https://webber-cocktail-api.herokuapp.com/",
+                },
+                {
+                    url: "http://localhost:3000",
+                },
+            ],
         },
         apis: ["src/routes/v1/cocktail/cocktail.routes.js"],
     };
     
+    // Initialize the swagger documentation
     const specs = swaggerJsdoc(options);
     app.use(
         "/api-docs",
@@ -54,7 +53,7 @@ function createServer() {
         swaggerUi.setup(specs)
     );
 
-    // Init routes
+    // Initialize routes
     registerApiRoutes(app, '/api/v1');
 
 	return app

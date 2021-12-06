@@ -1,6 +1,4 @@
-// const express = require('express');
 const dotenv = require('dotenv');
-// const registerApiRoutes = require('./routes/v1/')
 const createServer = require('./server');
 
 // Configure the env file
@@ -9,7 +7,7 @@ dotenv.config({ path: '.env' });
 // Set port from env file - default to 3000
 const PORT = process.env.PORT || '3000';
 
-// Startup
+// Startup application
 (async function main() {
 	try {
 		// Create server

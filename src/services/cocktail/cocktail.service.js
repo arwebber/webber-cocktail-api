@@ -8,6 +8,13 @@ const cocktailAPIService = new CocktailAPIService();
 const cocktailDBService = new CocktailDBService();
 
 class CocktailService {
+    /**
+     * Get all cocktails by name from both backends and combine their responses.
+     * @param {*} pageSize the page size to return.
+     * @param {*} pageIndex the page index to return.
+     * @param {*} cocktailName 
+     * @returns response
+     */
     async getAllCocktailsByName(pageSize, pageIndex, cocktailName) {
         return new Promise(async function(resolve, reject) {
             let response = {}
@@ -59,6 +66,13 @@ class CocktailService {
         });
     }
     
+    /**
+     * Get all cocktails by first letter from both backends and combine their responses.
+     * @param {*} pageSize the page size to return.
+     * @param {*} pageIndex the page index to return.
+     * @param {*} cocktailFirstLetter 
+     * @returns response
+     */
     async getAllCocktailsByFirstLetter(pageSize, pageIndex, cocktailFirstLetter) {
         return new Promise(async function(resolve, reject) {
             let response = {}
@@ -110,6 +124,11 @@ class CocktailService {
         });
     }
 
+    /**
+     * Get cocktail by cocktail id from either backend.
+     * @param {*} cocktailId 
+     * @returns response
+     */
     async getAllCocktailsByID(cocktailId) {
         return new Promise(async function(resolve, reject) {
             let response = {}
@@ -160,6 +179,13 @@ class CocktailService {
         });
     }
 
+    /**
+     * Get all cocktails by ingredients from both backends and combine their responses.
+     * @param {*} pageSize the page size to return.
+     * @param {*} pageIndex the page index to return.
+     * @param {*} ingredients 
+     * @returns response
+     */
     async getAllCocktailsByIngredientNames(pageSize, pageIndex, ingredients) {
         return new Promise(async function(resolve, reject) {
             let response = {};
@@ -223,6 +249,13 @@ class CocktailService {
         });
     }
 
+    /**
+     * Get all cocktails by categories from both backends and combine their responses.
+     * @param {*} pageSize the page size to return.
+     * @param {*} pageIndex the page index to return.
+     * @param {*} categories 
+     * @returns response
+     */
     async getAllCocktailsByCategories(pageSize, pageIndex, categories) {
         return new Promise(async function(resolve, reject) {
             let response = {};
@@ -265,6 +298,13 @@ class CocktailService {
         });
     }
 
+    /**
+     * Get all cocktails by alcoholic type from both backends and combine their responses.
+     * @param {*} pageSize the page size to return.
+     * @param {*} pageIndex the page index to return.
+     * @param {*} alcoholic 
+     * @returns response
+     */
     async getAllCocktailsByAlcoholic(pageSize, pageIndex, alcoholic) {
         return new Promise(async function(resolve, reject) {
             let response = {}
@@ -316,6 +356,13 @@ class CocktailService {
         });
     }
 
+    /**
+     * Get all cocktails by glass type from both backends and combine their responses.
+     * @param {*} pageSize the page size to return.
+     * @param {*} pageIndex the page index to return.
+     * @param {*} glass 
+     * @returns response
+     */
     async getAllCocktailsByGlass(pageSize, pageIndex, glass) {
         return new Promise(async function(resolve, reject) {
             let response = {}
@@ -367,6 +414,13 @@ class CocktailService {
         });
     }
 
+    /**
+     * Get a random cocktail from either backend.
+     * @param {*} pageSize the page size to return.
+     * @param {*} pageIndex the page index to return.
+     * @param {*} alcoholic 
+     * @returns response
+     */
     async getAllRandomCocktail() {
         return new Promise(async function(resolve, reject) {
             let response = {}
@@ -385,7 +439,14 @@ class CocktailService {
     }
 }
 
-// Helper function to combine response drinks, sort and paginate.
+/**
+ * Helper function to combine response drinks, sort and paginate response.
+ * @param {*} pageSizeInt the page size to return.
+ * @param {*} pageIndexInt the page index to return.
+ * @param {*} array1 the first response array.
+ * @param {*} array2 the second response array.
+ * @returns response
+ */
 function paginateResponse(pageSizeInt, pageIndexInt, array1, array2) {
     // Combine the two responses.
     let combinedArray = [...array1, ...array2];

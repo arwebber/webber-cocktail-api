@@ -61,7 +61,7 @@ class CocktailRoutes {
 		 *         description: Error Executing query - see returned message.
 		 */
 		this.router.get(
-			'/details/id/:id',
+			'/details/id/:cocktailId',
 			this.cocktailController.getCocktailById
 		);
 
