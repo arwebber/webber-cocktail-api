@@ -8,7 +8,7 @@ let COCKTAILDB_URI = process.env.COCKTAILDB_URI;
 class CocktailAPIService {
 
     /**
-     * Get cocktails from the cocktaildb api by name
+     * Get cocktails from the cocktaildb api by name.
      * @param {string} name 
      * @returns reponse
      */
@@ -61,7 +61,11 @@ class CocktailAPIService {
         });
     }
 
-    // List all cocktails by first letter
+    /**
+     * Get cocktails from the cocktaildb api by first letter.
+     * @param {string} letter 
+     * @returns reponse
+     */
     async getCocktailsByFirstLetter(letter) {
         return new Promise(function(resolve, reject) {
             let url = `${COCKTAILDB_URI}/search.php?f=${letter}`;
@@ -111,7 +115,11 @@ class CocktailAPIService {
         });
     }
 
-    // Search by ingredient
+    /**
+     * Get cocktails from the cocktaildb api by ingredient.
+     * @param {string} ingredient 
+     * @returns reponse
+     */
     async getCocktailsByIngredientName(ingredient) {
         return new Promise(function(resolve, reject) {
             let url = `${COCKTAILDB_URI}/filter.php?i=${ingredient}`;
@@ -161,7 +169,11 @@ class CocktailAPIService {
         });
     }
 
-    // Filter by alcoholic
+    /**
+     * Get cocktails from the cocktaildb api by alcoholic type.
+     * @param {string} alcoholic 
+     * @returns reponse
+     */
     async getCocktailsByAlcoholic(alcoholic) {
         return new Promise(function(resolve, reject) {
             let url = `${COCKTAILDB_URI}/filter.php?a=${alcoholic}`;
@@ -211,7 +223,11 @@ class CocktailAPIService {
         });
     }
     
-    // Filter by Category
+    /**
+     * Get cocktails from the cocktaildb api by category.
+     * @param {string} category 
+     * @returns reponse
+     */
     async getCocktailsByCategory(category) {
         return new Promise(function(resolve, reject) {
             let url = `${COCKTAILDB_URI}/filter.php?c=${category}`;
@@ -261,7 +277,11 @@ class CocktailAPIService {
         });
     }
     
-    // Filter by Glass
+    /**
+     * Get cocktails from the cocktaildb api by glass type.
+     * @param {string} glass 
+     * @returns reponse
+     */
     async getCocktailsByGlass(glass) {
         return new Promise(function(resolve, reject) {
             let url = `${COCKTAILDB_URI}/filter.php?g=${glass}`;
@@ -311,7 +331,11 @@ class CocktailAPIService {
         });
     }
 
-    // Search ingredient by name
+    /**
+     * Get cocktail ingredient from the cocktaildb api by name.
+     * @param {string} ingredientName 
+     * @returns reponse
+     */
     async getIngredientDetailsByName(ingredientName) {
         return new Promise(function(resolve, reject) {
             let url = `${COCKTAILDB_URI}/search.php?i=${ingredientName}`;
@@ -358,7 +382,11 @@ class CocktailAPIService {
         });
     }
 
-    // Lookup ingredient by ID
+    /**
+     * Get cocktail ingredient from the cocktaildb api by id.
+     * @param {string} ingredientId 
+     * @returns reponse
+     */
     async getIngredientDetailsById(ingredientId) {
         return new Promise(function(resolve, reject){
             let url = `${COCKTAILDB_URI}/lookup.php?iid=${ingredientId}`;
@@ -408,7 +436,11 @@ class CocktailAPIService {
         });
     }
 
-    // Lookup full cocktail details by id
+    /**
+     * Get cocktail from the cocktaildb api by id.
+     * @param {string} id 
+     * @returns reponse
+     */
     async getCocktailById(id) {
         return new Promise(function(resolve, reject){
             let url = `${COCKTAILDB_URI}/lookup.php?i=${id}`;
@@ -458,7 +490,10 @@ class CocktailAPIService {
         });
     }
 
-    // Lookup a random cocktail
+    /**
+     * Get a random cocktail from the cocktaildb api.
+     * @returns reponse
+     */
     async getRandomCocktail() {
         return new Promise(function(resolve, reject){
             let url = `${COCKTAILDB_URI}/random.php`;
@@ -508,7 +543,13 @@ class CocktailAPIService {
         });
     }
 
-    // List the categories, glasses, ingredients or alcoholic filters
+    /**
+     * Get filter options from the cocktaildb api by filter type.
+     * @param {string} pageSize the size to return.
+     * @param {string} pageIndex the page to return.
+     * @param {string} filter 
+     * @returns reponse
+     */
     async getFilterListByFilter(pageSize, pageIndex, filter) {
         return new Promise(function(resolve, reject){
             let filterList = '';
