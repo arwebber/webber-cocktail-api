@@ -8,7 +8,7 @@ class CocktailDBController {
                   const { cocktail } = req.body;
 
                   const response = await cocktailDBService.addCocktail(cocktail);
-                  return res.json({response});
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
@@ -21,7 +21,7 @@ class CocktailDBController {
                   const { cocktail } = req.body;
 
                   const response = await cocktailDBService.updateCocktail(cocktail);
-                  return res.json({response});
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
@@ -34,7 +34,7 @@ class CocktailDBController {
                   const { cocktailId } = req.params;
 
                   const response = await cocktailDBService.deleteCocktail(cocktailId);
-                  return res.json({response});
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
