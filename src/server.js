@@ -39,6 +39,9 @@ function createServer() {
             {
             url: "https://webber-cocktail-api.herokuapp.com/",
             },
+            {
+            url: "http://localhost:3000",
+            },
         ],
         },
         apis: ["src/routes/v1/cocktail/cocktail.routes.js"],
