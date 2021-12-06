@@ -273,7 +273,7 @@ test('GET /random', async () => {
 
 /** Alcoholic section */
 // Get by non_alcoholic drinks by type
-test('GET /alcohilic', async () => {
+test('GET /alcoholic', async () => {
     const alcoholic = 'non_alcoholic';
 	await supertest(app)
 		.get('/api/v1/cocktail/alcoholic/' + alcoholic)
