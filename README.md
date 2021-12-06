@@ -10,7 +10,7 @@ To run the api locally follow the steps below.
 - Run `npm install` at the root of the project to install dependencies
 - Run `npm start` to start the service
 
-You will need the .env file in order to connect to the database. This will be provided to you directly. The .env file should be placed at the root of the project directory.
+You will need the .env file in order to connect to the database. This will be provided to you directly. The .env file should be placed at the root of the project directory. If the provided .env file is named 'env' you must rename the file to include the dot at the beginning like '.env'
 
 ## View Swagger Docs Locally
 After you have successfully started the application:
