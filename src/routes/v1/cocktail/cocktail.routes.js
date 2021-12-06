@@ -468,7 +468,7 @@ class CocktailRoutes {
 		 *                 properties:
 		 *                   idDrink:
 		 *                     type: string
-		 *                     example: '8a7622b8-564b-11ec-a6c6-0a3054738d59'
+		 *                     example: '3cd16307-5691-11ec-a6c6-0a3054738d59'
 		 *                   strDrink:
 		 *                     type: string
 		 *                     example: 'The new name for the cocktail'
