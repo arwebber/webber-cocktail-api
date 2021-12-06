@@ -23,5 +23,5 @@ const PORT = process.env.PORT || '3000';
 })();
 
 function callBackLog() {
-    console.log('Server started on port ' + process.env.NODE_PORT);
+    console.log('Server started on port ' + PORT);
 }
