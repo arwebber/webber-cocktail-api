@@ -10,9 +10,9 @@ const cocktailDBService = new CocktailDBService();
 class CocktailService {
     /**
      * Get all cocktails by name from both backends and combine their responses.
-     * @param {*} pageSize the page size to return.
-     * @param {*} pageIndex the page index to return.
-     * @param {*} cocktailName 
+     * @param {string} pageSize the page size to return.
+     * @param {string} pageIndex the page index to return.
+     * @param {string} cocktailName 
      * @returns response
      */
     async getAllCocktailsByName(pageSize, pageIndex, cocktailName) {
@@ -68,9 +68,9 @@ class CocktailService {
     
     /**
      * Get all cocktails by first letter from both backends and combine their responses.
-     * @param {*} pageSize the page size to return.
-     * @param {*} pageIndex the page index to return.
-     * @param {*} cocktailFirstLetter 
+     * @param {string} pageSize the page size to return.
+     * @param {string} pageIndex the page index to return.
+     * @param {string} cocktailFirstLetter 
      * @returns response
      */
     async getAllCocktailsByFirstLetter(pageSize, pageIndex, cocktailFirstLetter) {
@@ -126,7 +126,7 @@ class CocktailService {
 
     /**
      * Get cocktail by cocktail id from either backend.
-     * @param {*} cocktailId 
+     * @param {string} cocktailId 
      * @returns response
      */
     async getAllCocktailsByID(cocktailId) {
@@ -181,9 +181,9 @@ class CocktailService {
 
     /**
      * Get all cocktails by ingredients from both backends and combine their responses.
-     * @param {*} pageSize the page size to return.
-     * @param {*} pageIndex the page index to return.
-     * @param {*} ingredients 
+     * @param {string} pageSize the page size to return.
+     * @param {string} pageIndex the page index to return.
+     * @param {string} ingredients 
      * @returns response
      */
     async getAllCocktailsByIngredientNames(pageSize, pageIndex, ingredients) {
@@ -251,9 +251,9 @@ class CocktailService {
 
     /**
      * Get all cocktails by categories from both backends and combine their responses.
-     * @param {*} pageSize the page size to return.
-     * @param {*} pageIndex the page index to return.
-     * @param {*} categories 
+     * @param {string} pageSize the page size to return.
+     * @param {string} pageIndex the page index to return.
+     * @param {string} categories 
      * @returns response
      */
     async getAllCocktailsByCategories(pageSize, pageIndex, categories) {
@@ -300,9 +300,9 @@ class CocktailService {
 
     /**
      * Get all cocktails by alcoholic type from both backends and combine their responses.
-     * @param {*} pageSize the page size to return.
-     * @param {*} pageIndex the page index to return.
-     * @param {*} alcoholic 
+     * @param {string} pageSize the page size to return.
+     * @param {string} pageIndex the page index to return.
+     * @param {string} alcoholic 
      * @returns response
      */
     async getAllCocktailsByAlcoholic(pageSize, pageIndex, alcoholic) {
@@ -358,9 +358,9 @@ class CocktailService {
 
     /**
      * Get all cocktails by glass type from both backends and combine their responses.
-     * @param {*} pageSize the page size to return.
-     * @param {*} pageIndex the page index to return.
-     * @param {*} glass 
+     * @param {string} pageSize the page size to return.
+     * @param {string} pageIndex the page index to return.
+     * @param {string} glass 
      * @returns response
      */
     async getAllCocktailsByGlass(pageSize, pageIndex, glass) {
@@ -416,9 +416,9 @@ class CocktailService {
 
     /**
      * Get a random cocktail from either backend.
-     * @param {*} pageSize the page size to return.
-     * @param {*} pageIndex the page index to return.
-     * @param {*} alcoholic 
+     * @param {string} pageSize the page size to return.
+     * @param {string} pageIndex the page index to return.
+     * @param {string} alcoholic 
      * @returns response
      */
     async getAllRandomCocktail() {
@@ -441,10 +441,10 @@ class CocktailService {
 
 /**
  * Helper function to combine response drinks, sort and paginate response.
- * @param {*} pageSizeInt the page size to return.
- * @param {*} pageIndexInt the page index to return.
- * @param {*} array1 the first response array.
- * @param {*} array2 the second response array.
+ * @param {string} pageSizeInt the page size to return.
+ * @param {string} pageIndexInt the page index to return.
+ * @param {array} array1 the first response array.
+ * @param {array} array2 the second response array.
  * @returns response
  */
 function paginateResponse(pageSizeInt, pageIndexInt, array1, array2) {
