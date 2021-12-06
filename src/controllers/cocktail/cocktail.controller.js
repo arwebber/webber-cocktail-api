@@ -157,12 +157,51 @@ class CocktailController {
                   let pageIndex = req.query.pageIndex ? req.query.pageIndex : '0';
 
                   if (ingredients === null || ingredients === '') {
-                        return res.json({status: 200, body: 'fail'});
+                        return res.json({status: 200, msg: 'Must provide at least one ingredient', hits: []});
                   }
 
                   let ingredientsArray = ingredients.split(',');
 
                   const response = await cocktailService.getAllCocktailsByIngredientNames(pageSize, pageIndex, ingredientsArray);
+                  return res.json(response);
+            } 
+            catch (err) {
+                  return next(err);
+            }
+	}
+
+      /**
+       * Get all cocktails by ingredient names.
+       * @param pageSize the size to return.
+       * @param pageIndex the page to return.
+       * @param ingredients the ingredients to search on.
+       * @param {*} req the request.
+       * @param {*} res api response.
+       * @param {*} next 
+       * @returns response.
+       */
+       async getCocktailsByIngredientNamesAndCategories(req, res, next) {
+		try {
+                  const ingredients = req.query.ingredients;
+                  const categories = req.query.categories;
+
+                  // Set the page size and index
+                  let pageSize = req.query.pageSize ? req.query.pageSize : '10';
+                  let pageIndex = req.query.pageIndex ? req.query.pageIndex : '0';
+
+                  if (!ingredients || ingredients === '') {
+                        return res.json({status: 200, msg: 'Must provide at least one ingredient', hits: []});
+                  }
+
+                  if (!categories || categories === '') {
+                        return res.json({status: 200, msg: 'Must provide at least one category', hits: []});
+                  }
+
+                  let ingredientsArray = ingredients.split(',');
+
+                  let categoriesArray = categories.split(',');
+
+                  const response = await cocktailService.getAllCocktailsByIngredientsAndCategories(pageSize, pageIndex, ingredientsArray, categoriesArray);
                   return res.json(response);
             } 
             catch (err) {
@@ -215,7 +254,7 @@ class CocktailController {
                   let pageIndex = req.query.pageIndex ? req.query.pageIndex : '0';
 
                   if (categories === null || categories === '') {
-                        return res.json({status: 200, body: 'fail'});
+                        return res.json({status: 200, msg: 'Must provide at least once category', hits: []});
                   }
 
                   let categoriesArray = categories.split(',');

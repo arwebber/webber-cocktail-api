@@ -139,6 +139,36 @@ class CocktailRoutes {
 
 		/**
 		 * @swagger
+		 * /api/v1/cocktail/details/ingredientsAndCategories:
+		 *   get:
+		 *     description: Get a list of cocktails matching multiple ingredients and categories.
+		 *     tags: [Cocktail]
+		 *     parameters:
+		 *       - name: ingredients
+		 *         example: tequila
+		 *         description: 'The ingredients to search on. You can search on a single ingredient or multiple, however, if searching multiple the value must be comma seperated, for example: gin,dry_vermouth'
+	 	 *         in: query
+		 *         required: true
+		 *         type: string
+		 *       - name: categories
+		 *         example: Ordinary Drink
+		 *         description: 'The categories to search on. You can search on a single category or multiple, however, if searching multiple the value must be comma seperated, for example: cocktail,ordinary drink'
+	 	 *         in: query
+		 *         required: true
+		 *         type: string
+		 *     responses:
+		 *       200:
+		 *         description: Returns a list of cocktails based on the provided ingredients and categories.
+		 *       503:
+		 *         description: Error Executing query - see returned message.
+		 */
+		this.router.get(
+			'/details/ingredientsAndCategories',
+			this.cocktailController.getCocktailsByIngredientNamesAndCategories
+		);
+
+		/**
+		 * @swagger
 		 * /api/v1/cocktail/details/glass/{glass}:
 		 *   get:
 		 *     description: Get a list of cocktails by the glass of the cocktail.

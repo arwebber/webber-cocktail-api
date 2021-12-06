@@ -1,5 +1,6 @@
 const createServer = require('../server');
 const supertest = require('supertest');
+const { expect } = require('@jest/globals');
 
 const app = createServer();
 
@@ -129,8 +130,8 @@ test('GET /details/ingredients with multiple ingredients', async () => {
 			// Check the response type and length.
 			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
-            // I know the response for 
-			expect(response.body.hits.length).toEqual(1);
+            // We know there is at least one response.
+			expect(response.body.hits.length).toBeGreaterThanOrEqual(1);
 		})
 })
 
@@ -180,6 +181,75 @@ test('GET /details/categories with multiple categories', async () => {
 
             // The pageSize is 1 we expect only one result.
 			expect(response.body.hits.length).toEqual(1);
+		})
+})
+
+/** Get cocktails by ingredients and categories */
+// Get cocktails by a ingredient and category with default page size
+test('GET /details/ingredientsAndCategories with single ingredient and category with default pageSize', async () => {
+    const ingredients = 'tequila';
+	const categories = 'Ordinary Drink';
+	await supertest(app)
+		.get('/api/v1/cocktail/details/ingredientsAndCategories?ingredients=' + ingredients + '&categories=' + categories)
+		.expect(200)
+		.then((response) => {
+			// Check the response type and length.
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
+
+            // We know that there will be at least one response.
+			expect(response.body.hits.length).toBeGreaterThanOrEqual(1);
+		})
+});
+
+// Get cocktails by a single ingredient with page size of 2
+test('GET /details/ingredientsAndCategories with only ingredients', async () => {
+    const ingredients = 'tequila';
+	await supertest(app)
+		.get('/api/v1/cocktail/details/ingredientsAndCategories?ingredients=' + ingredients)
+		.expect(200)
+		.then((response) => {
+			// Check the response type and length.
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
+
+            // We know that there will be at least one response.
+			expect(response.body.hits.length).toBe(0);
+
+			// We expect the following error message.
+			expect(response.body.msg).toBe('Must provide at least one category');
+		})
+});
+
+// Get cocktails by a single ingredient with page size of 2
+test('GET /details/ingredientsAndCategories with only categories', async () => {
+	const categories = 'Ordinary Drink';
+	await supertest(app)
+		.get('/api/v1/cocktail/details/ingredientsAndCategories?categories=' + categories)
+		.expect(200)
+		.then((response) => {
+			// Check the response type and length.
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
+
+            // We know that there will be at least one response.
+			expect(response.body.hits.length).toBe(0);
+
+			// We expect the following error message.
+			expect(response.body.msg).toBe('Must provide at least one ingredient');
+		})
+});
+
+// Get cocktails by multiple ingredients
+test('GET /details/ingredientsAndCategories with multiple ingredients or categories', async () => {
+    const ingredients = 'gin,dry_vermouth';
+	const categories = 'Ordinary Drink';
+	await supertest(app)
+		.get('/api/v1/cocktail/details/ingredientsAndCategories?ingredients=' + ingredients + '&categories=' + categories)
+		.expect(200)
+		.then((response) => {
+			// Check the response type and length.
+			expect(Array.isArray(response.body.hits)).toBeTruthy();
+
+            // We know that there will be at least one response.
+			expect(response.body.hits.length).toBeGreaterThanOrEqual(1);
 		})
 })
 
@@ -299,7 +369,7 @@ test('GET /filter categories', async () => {
 			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // We are querying a single ingredient, expect only one result.
-			expect(response.body.hits.length).toBeGreaterThan(0);
+			expect(response.body.hits.length).toBeGreaterThanOrEqual(1);
 		})
 });
 
@@ -314,7 +384,7 @@ test('GET /filter glasses', async () => {
 			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // We are querying a single ingredient, expect only one result.
-			expect(response.body.hits.length).toBeGreaterThan(0);
+			expect(response.body.hits.length).toBeGreaterThanOrEqual(1);
 		})
 });
 
@@ -329,7 +399,7 @@ test('GET /filter ingredients', async () => {
 			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // We are querying a single ingredient, expect only one result.
-			expect(response.body.hits.length).toBeGreaterThan(0);
+			expect(response.body.hits.length).toBeGreaterThanOrEqual(1);
 		})
 });
 
@@ -344,6 +414,6 @@ test('GET /filter alcoholic', async () => {
 			expect(Array.isArray(response.body.hits)).toBeTruthy();
 
             // We are querying a single ingredient, expect only one result.
-			expect(response.body.hits.length).toBeGreaterThan(0);
+			expect(response.body.hits.length).toBeGreaterThanOrEqual(1);
 		})
 });

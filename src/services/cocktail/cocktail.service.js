@@ -264,6 +264,55 @@ class CocktailService {
             let cocktailDBCategoryDrinks = [];
             let userDBCategoryDrinks = [];
 
+            // Loop through the category list and call the cocktail db each time with a single category
+            for (let i = 0; i < categories.length; i++) {
+                // Call cocktail db service.
+                const singleIngredientCocktailDBResponse = await cocktailAPIService.getCocktailsByCategory(categories[i]);
+                
+                singleIngredientCocktailDBResponse.hits.forEach((singleIng) => {
+                    cocktailDBCategoryDrinks.push(singleIng);
+                });
+            }
+
+            // Loop through the category list and call the cocktail db each time with a single category
+            for (let i = 0; i < categories.length; i++) {
+                // Call cocktail db service.
+                const singleIngredientCocktailDBResponse = await cocktailDBService.getCocktailsByCategory(categories[i]);
+
+                singleIngredientCocktailDBResponse.hits.forEach((singleIng) => {
+                    userDBCategoryDrinks.push(singleIng);
+                });
+            }
+
+            const paginatedResponseBody = paginateResponse(pageSize, pageIndex, cocktailDBCategoryDrinks, userDBCategoryDrinks);
+
+            response = {
+                status: 200,
+                ...paginatedResponseBody
+            }
+
+            return resolve(response);
+        });
+    }
+
+    /**
+     * Get all cocktails by categories from both backends and combine their responses.
+     * @param {string} pageSize the page size to return.
+     * @param {string} pageIndex the page index to return.
+     * @param {string} categories 
+     * @returns response
+     */
+     async getAllCocktailsByIngredientsAndCategories(pageSize, pageIndex, ingredients, categories) {
+        return new Promise(async function(resolve, reject) {
+            let response = {};
+
+            /** CATEGORY SECTION */
+
+            // Initialize filtered drink lists
+            let cocktailDBCategoryDrinks = [];
+            let userDBCategoryDrinks = [];
+
+            
             // Loop through the ingredient list and call the cocktail db each time with a single ingredient
             for (let i = 0; i < categories.length; i++) {
                 // Call cocktail db service.
@@ -281,13 +330,82 @@ class CocktailService {
                 // Call cocktail db service.
                 const singleIngredientCocktailDBResponse = await cocktailDBService.getCocktailsByCategory(categories[i]);
 
-                // Push all di
                 singleIngredientCocktailDBResponse.hits.forEach((singleIng) => {
                     userDBCategoryDrinks.push(singleIng);
                 });
             }
 
-            const paginatedResponseBody = paginateResponse(pageSize, pageIndex, cocktailDBCategoryDrinks, userDBCategoryDrinks);
+            /** END CATEGORY SECTION */
+
+            /** START INGREDIENT SECTION */
+
+            // Initialize filtered drink lists
+            let cocktailDBFilteredDrinks;
+            let userDBFilteredDBDrinks;
+
+            // Loop through the ingredient list and call the cocktail db each time with a single ingredient
+            for (let i = 0; i < ingredients.length; i++) {
+                // Call cocktail db service.
+                const singleIngredientCocktailDBResponse = await cocktailAPIService.getCocktailsByIngredientName(ingredients[i]);
+                // First set the cocktail db filtered drink list to the first reponse
+                // This is used for single ingredient response
+                if (undefined === cocktailDBFilteredDrinks) {
+                    cocktailDBFilteredDrinks = singleIngredientCocktailDBResponse.hits;
+                } else {
+                    // Initialize a temp variable that clones the total list of cocktail 
+                    let loopFilteredDrinks = [...cocktailDBFilteredDrinks]
+                    // Reset the filtered list array
+                    cocktailDBFilteredDrinks = [];
+                    // Loop through the cloned list of filtered drinks.
+                    loopFilteredDrinks.forEach((ing) => {
+                        singleIngredientCocktailDBResponse.hits.forEach((singleIng) => {
+                            // If the latest response from cocktail db has the same drinkId that is in our cloned filtered list, add it to the total filtered list.  
+                            if (ing.idDrink === singleIng.idDrink) {
+                                cocktailDBFilteredDrinks.push(ing);
+                            }
+                        })
+                    });
+                }
+            }
+            
+            // Loop through the ingredient list and call the user db each time with a single ingredient
+            for (let i = 0; i < ingredients.length; i++) {
+                const singleIngredientUserDBResponse = await cocktailDBService.getCocktailsByIngredientName(ingredients[i]);
+                
+                if (undefined === userDBFilteredDBDrinks) {
+                    userDBFilteredDBDrinks = singleIngredientUserDBResponse.hits;
+                } else {
+                        let loopFilteredDrinks = [...userDBFilteredDBDrinks]
+                        userDBFilteredDBDrinks = [];
+                        loopFilteredDrinks.forEach((ing) => {
+                            singleIngredientUserDBResponse.hits.forEach((singleIng) => {
+                                    if (ing.idDrink === singleIng.idDrink) {
+                                        userDBFilteredDBDrinks.push(ing);
+                                    }
+                            })
+                        });
+                }
+            }
+
+            /** END INGREDIENT SECTION */
+
+            // Combine the reponses into a single array for category and ingredients
+            const responseArrayCategories = [...cocktailDBCategoryDrinks, ...userDBCategoryDrinks];
+            const responseArrayIngredients = [...cocktailDBFilteredDrinks, ...userDBFilteredDBDrinks];
+
+            let combinedArray = [];
+
+            // Loop through the two combined arrays and push matches into the combinedArray
+            responseArrayCategories.forEach((ing) => {
+                responseArrayIngredients.forEach((singleIng) => {
+                    if (ing.idDrink === singleIng.idDrink) {
+                        combinedArray.push(ing);
+                    }
+                })
+            });
+
+            // Get paginated response, we send a second array as an empty array to reuse the same function
+            const paginatedResponseBody = paginateResponse(pageSize, pageIndex, combinedArray, []);
 
             response = {
                 status: 200,
