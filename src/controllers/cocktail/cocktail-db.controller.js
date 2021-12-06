@@ -1,4 +1,4 @@
-const { CocktailDBService } = require('../../services/');
+const { CocktailDBService } = require('../../services');
 
 class CocktailDBController {
 

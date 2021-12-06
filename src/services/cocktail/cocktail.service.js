@@ -1,607 +1,410 @@
-const request = require('request');
 const dotenv = require('dotenv');
+const { CocktailAPIService, CocktailDBService } = require('..');
 
 // Configure the env file
 dotenv.config({ path: '.env' });
-let COCKTAILDB_URI = process.env.COCKTAILDB_URI;
+
+const cocktailAPIService = new CocktailAPIService();
+const cocktailDBService = new CocktailDBService();
 
 class CocktailService {
-
-    // Search cocktail by name
-    async getCocktailsByName(name) {
-        return new Promise(function(resolve, reject){
-            let url = `${COCKTAILDB_URI}/search.php?s=${name}`;
-
+    async getAllCocktailsByName(pageSize, pageIndex, cocktailName) {
+        return new Promise(async function(resolve, reject) {
             let response = {}
 
-            // Options used by request
-            const options = {
-                'method': 'GET',
-                'url': url
-            };
-
-            // Get the drink response from cocktaildb
-            request(options, function (error, res) { 
-                // Set the response status code. If there was an error, set the code to 503
-                response.status = res ? res.statusCode : 503;
-                
-                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
-                if (error) {
-                    console.log(error);
-                    response.body =  {};
-                    response.errMsg = error.toString();
-                    return resolve(response);
-                } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
-                    return resolve(response)
-                }
-
-                // Set the response to 200 since there was no error.
-                response.status = res.statusCode;
-
-                // Parse the response as JSON.
-                let apiResponseBody = {};
-                try {
-                    apiResponseBody = JSON.parse(res.body);
-
-                    response.body = {
-                        ...apiResponseBody,
-                        total: apiResponseBody.drinks.length
-                    }
-                } catch {
-                    response.body = {};
-                    response.errMsg = 'Unable to parse cocktaildb response.'
-                }
-
+            if (!cocktailName) {
+                response.status = 503;
+                response.errMsg = 'Cocktail name cannot be blank.';
                 return resolve(response);
-            });
-        });
-    }
-
-    // List all cocktails by first letter
-    async getCocktailsByFirstLetter(letter) {
-        return new Promise(function(resolve, reject) {
-            let url = `${COCKTAILDB_URI}/search.php?f=${letter}`;
-
-            let response = {}
-
-            // Options used by request
-            const options = {
-                'method': 'GET',
-                'url': url
-            };
-
-            // Get the drink response from cocktaildb
-            request(options, function (error, res) { 
-                // Set the response status code. If there was an error, set the code to 503
-                response.status = res ? res.statusCode : 503;
-                
-                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
-                if (error) {
-                    console.log(error);
-                    response.body =  {};
-                    response.errMsg = error.toString();
-                    return resolve(response);
-                } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
-                    return resolve(response)
-                }
-
-                // Set the response to 200 since there was no error.
-                response.status = res.statusCode;
-
-                // Parse the response as JSON.
-                let apiResponseBody = {};
-                try {
-                    apiResponseBody = JSON.parse(res.body);
-
-                    response.body = {
-                        ...apiResponseBody,
-                        total: apiResponseBody.drinks.length
-                    }
-                } catch {
-                    response.body = {};
-                    response.errMsg = 'Unable to parse cocktaildb response.'
-                }
-
-                return resolve(response);
-            });
-        });
-    }
-
-    // Search by ingredient
-    async getCocktailsByIngredientName(ingredient) {
-        return new Promise(function(resolve, reject) {
-            let url = `${COCKTAILDB_URI}/filter.php?i=${ingredient}`;
-    
-            let response = {}
-    
-            // Options used by request
-            const options = {
-                'method': 'GET',
-                'url': url
-            };
-    
-            // Get the drink response from cocktaildb
-            request(options, function (error, res) { 
-                // Set the response status code. If there was an error, set the code to 503
-                response.status = res ? res.statusCode : 503;
-    
-                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
-                if (error) {
-                    console.log(error);
-                    response.body =  {};
-                    response.errMsg = error.toString();
-                    return resolve(response);
-                } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
-                    return resolve(response)
-                }
-    
-                // Set the response to 200 since there was no error.
-                response.status = res.statusCode;
-    
-                // Parse the response as JSON.
-                let apiResponseBody = {};
-                try {
-                    apiResponseBody = JSON.parse(res.body);
-
-                    response.body = {
-                        ...apiResponseBody,
-                        total: apiResponseBody.drinks.length
-                    }
-                } catch {
-                    response.body = {};
-                    response.errMsg = 'Unable to parse cocktaildb response.'
-                }
-    
-                return resolve(response);
-            });
-        });
-    }
-
-    // Filter by alcoholic
-    async getCocktailsByAlcoholic(alcoholic) {
-        return new Promise(function(resolve, reject) {
-            let url = `${COCKTAILDB_URI}/filter.php?a=${alcoholic}`;
-    
-            let response = {}
-
-            // Options used by request
-            const options = {
-                'method': 'GET',
-                'url': url
-            };
-    
-            // Get the drink response from cocktaildb
-            request(options, function (error, res) { 
-                // Set the response status code. If there was an error, set the code to 503
-                response.status = res ? res.statusCode : 503;
-    
-                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
-                if (error) {
-                    console.log(error);
-                    response.body =  {};
-                    response.errMsg = error.toString();
-                    return resolve(response);
-                } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
-                    return resolve(response)
-                }
-    
-                // Set the response to 200 since there was no error.
-                response.status = res.statusCode;
-    
-                // Parse the response as JSON.
-                let apiResponseBody = {};
-                try {
-                    apiResponseBody = JSON.parse(res.body);
-
-                    response.body = {
-                        ...apiResponseBody,
-                        total: apiResponseBody.drinks.length
-                    }
-                } catch {
-                    response.body = {};
-                    response.errMsg = 'Unable to parse cocktaildb response.'
-                }
-    
-                return resolve(response);
-            });
-        });
-    }
-    
-    // Filter by Category
-    async getCocktailsByCategory(category) {
-        return new Promise(function(resolve, reject) {
-            let url = `${COCKTAILDB_URI}/filter.php?c=${category}`;
-
-            let response = {}
-    
-            // Options used by request
-            const options = {
-                'method': 'GET',
-                'url': url
-            };
-    
-            // Get the drink response from cocktaildb
-            request(options, function (error, res) { 
-                // Set the response status code. If there was an error, set the code to 503
-                response.status = res ? res.statusCode : 503;
-    
-                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
-                if (error) {
-                    console.log(error);
-                    response.body =  {};
-                    response.errMsg = error.toString();
-                    return resolve(response);
-                } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
-                    return resolve(response)
-                }
-    
-                // Set the response to 200 since there was no error.
-                response.status = res.statusCode;
-    
-                // Parse the response as JSON.
-                let apiResponseBody = {};
-                try {
-                    apiResponseBody = JSON.parse(res.body);
-
-                    response.body = {
-                        ...apiResponseBody,
-                        total: apiResponseBody.drinks.length
-                    }
-                } catch {
-                    response.body = {};
-                    response.errMsg = 'Unable to parse cocktaildb response.'
-                }
-    
-                return resolve(response);
-            });
-        });
-    }
-    
-    // Filter by Glass
-    async getCocktailsByGlass(glass) {
-        return new Promise(function(resolve, reject) {
-            let url = `${COCKTAILDB_URI}/filter.php?g=${glass}`;
-    
-            let response = {}
-
-            // Options used by request
-            const options = {
-                'method': 'GET',
-                'url': url
-            };
-    
-            // Get the drink response from cocktaildb
-            request(options, function (error, res) { 
-                // Set the response status code. If there was an error, set the code to 503
-                response.status = res ? res.statusCode : 503;
-    
-                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
-                if (error) {
-                    console.log(error);
-                    response.body =  {};
-                    response.errMsg = error.toString();
-                    return resolve(response);
-                } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
-                    return resolve(response)
-                }
-    
-                // Set the response to 200 since there was no error.
-                response.status = res.statusCode;
-    
-                // Parse the response as JSON.
-                let apiResponseBody = {};
-                try {
-                    apiResponseBody = JSON.parse(res.body);
-                    
-                    response.body = {
-                        ...apiResponseBody,
-                        total: apiResponseBody.drinks.length
-                    }
-                } catch {
-                    response.body = {};
-                    response.errMsg = 'Unable to parse cocktaildb response.'
-                }
-    
-                return resolve(response);
-            });
-        });
-    }
-
-    // Search ingredient by name
-    async getIngredientDetailsByName(ingredientName) {
-        return new Promise(function(resolve, reject) {
-            let url = `${COCKTAILDB_URI}/search.php?i=${ingredientName}`;
-
-            let response = {}
-
-            // Options used by request
-            const options = {
-                'method': 'GET',
-                'url': url
-            };
-
-            // Get the drink response from cocktaildb
-            request(options, function (error, res) { 
-                // Set the response status code. If there was an error, set the code to 503
-                response.status = res ? res.statusCode : 503;
-
-                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
-                if (error) {
-                    console.log(error);
-                    response.body =  {};
-                    response.errMsg = error.toString();
-                    return resolve(response);
-                } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
-                    return resolve(response)
-                }
-
-                // Set the response to 200 since there was no error.
-                response.status = res.statusCode;
-
-                // Parse the response as JSON.
-                let apiResponseBody = {};
-                try {
-                    apiResponseBody = JSON.parse(res.body);
-                    
-                    response.body = {
-                        ...apiResponseBody,
-                        total: apiResponseBody.ingredients.length
-                    }
-                } catch {
-                    response.body = {};
-                    response.errMsg = 'Unable to parse cocktaildb response.'
-                }
-
-                return resolve(response);
-            });
-        });
-    }
-
-    // Lookup ingredient by ID
-    async getIngredientDetailsById(ingredientId) {
-        return new Promise(function(resolve, reject){
-            let url = `${COCKTAILDB_URI}/lookup.php?iid=${ingredientId}`;
-
-            let response = {}
-
-            // Options used by request
-            const options = {
-                'method': 'GET',
-                'url': url
-            };
-
-            // Get the drink response from cocktaildb
-            request(options, function (error, res) { 
-                // Set the response status code. If there was an error, set the code to 503
-                response.status = res ? res.statusCode : 503;
-
-                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
-                if (error) {
-                    console.log(error);
-                    response.body =  {};
-                    response.errMsg = error.toString();
-                    return resolve(response);
-                } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
-                    return resolve(response)
-                }
-
-                // Set the response to 200 since there was no error.
-                response.status = res.statusCode;
-
-                // Parse the response as JSON.
-                let apiResponseBody = {};
-                try {
-                    apiResponseBody = JSON.parse(res.body);
-                    
-                    response.body = {
-                        ...apiResponseBody,
-                        total: apiResponseBody.ingredients.length
-                    }
-                } catch {
-                    response.body = {};
-                    response.errMsg = 'Unable to parse cocktaildb response.'
-                }
-
-                return resolve(response);
-            });
-        });
-    }
-
-    // Lookup full cocktail details by id
-    async getCocktailById(id) {
-        return new Promise(function(resolve, reject){
-            let url = `${COCKTAILDB_URI}/lookup.php?i=${id}`;
-
-            let response = {}
-
-            // Options used by request
-            const options = {
-                'method': 'GET',
-                'url': url
-            };
-
-            // Get the drink response from cocktaildb
-            request(options, function (error, res) { 
-                // Set the response status code. If there was an error, set the code to 503
-                response.status = res ? res.statusCode : 503;
-
-                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
-                if (error) {
-                    console.log(error);
-                    response.body =  {};
-                    response.errMsg = error.toString();
-                    return resolve(response);
-                } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
-                    return resolve(response)
-                }
-
-                // Set the response to 200 since there was no error.
-                response.status = res.statusCode;
-
-                // Parse the response as JSON.
-                let apiResponseBody = {};
-                try {
-                    apiResponseBody = JSON.parse(res.body);
-                    
-                    response.body = {
-                        ...apiResponseBody,
-                        total: apiResponseBody.drinks.length
-                    }
-                } catch {
-                    response.body = {};
-                    response.errMsg = 'Unable to parse cocktaildb response.'
-                }
-
-                return resolve(response);
-            });
-        });
-    }
-
-    // Lookup a random cocktail
-    async getRandomCocktail() {
-        return new Promise(function(resolve, reject){
-            let url = `${COCKTAILDB_URI}/random.php`;
-
-            let response = {}
-
-            // Options used by request
-            const options = {
-                'method': 'GET',
-                'url': url
-            };
-
-            // Get the drink response from cocktaildb
-            request(options, function (error, res) { 
-                // Set the response status code. If there was an error, set the code to 503
-                response.status = res ? res.statusCode : 503;
-
-                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
-                if (error) {
-                    console.log(error);
-                    response.body =  {};
-                    response.errMsg = error.toString();
-                    return resolve(response);
-                } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
-                    return resolve(response)
-                }
-
-                // Set the response to 200 since there was no error.
-                response.status = res.statusCode;
-
-                // Parse the response as JSON.
-                let apiResponseBody = {};
-                try {
-                    apiResponseBody = JSON.parse(res.body);
-                    
-                    response.body = {
-                        ...apiResponseBody,
-                        total: apiResponseBody.drinks.length
-                    }
-                } catch {
-                    response.body = {};
-                    response.errMsg = 'Unable to parse cocktaildb response.'
-                }
-
-                return resolve(response);
-            });
-        });
-    }
-
-    // List the categories, glasses, ingredients or alcoholic filters
-    async getFilterListByFilter(pageSize, pageIndex, filter) {
-        return new Promise(function(resolve, reject){
-            let filterList = '';
-            switch(filter) {
-                case 'categories':
-                    filterList = 'c'
-                    break;
-                case 'glasses':
-                    filterList = 'g'
-                    break;
-                case 'ingredients':
-                    filterList = 'i'
-                    break;
-                case 'alcoholic':
-                    filterList = 'a'
-                    break;
             }
 
-            let url = `${COCKTAILDB_URI}/list.php?${filterList}=list`;
-
-            let response = {}
-    
-            // Parse the page size and int
+            // Parse the page size and int.
             let pageSizeInt = parseInt(pageSize);
             let pageIndexInt = parseInt(pageIndex);
 
-            // If a non int is passed in as the page size or index, send back a 503
+            // If a non int is passed in as the page size or index, send back a 503.
             if (isNaN(pageSizeInt) || isNaN(pageIndexInt)) {
                 response.status = 503;
-                response.body = {};
                 response.errMsg = 'Error parsing pageSize or pageIndex.';
                 return resolve(response);
             }
 
-            // Options used by request
-            const options = {
-                'method': 'GET',
-                'url': url
-            };
-    
-            // Get the drink response from cocktaildb
-            request(options, function (error, res) { 
-                // Set the response status code. If there was an error, set the code to 503
-                response.status = res ? res.statusCode : 503;
-    
-                // Check if there was an error returning data from cocktaildb, log the error and resolve with the error.
-                if (error) {
-                    console.log(error);
-                    response.body =  {};
-                    response.errMsg = error.toString();
-                    return resolve(response);
-                } else if (res.body === null || res.body.trim() === '') {
-                    response.body = 'No data returned';
-                    return resolve(response)
-                }
-    
-                // Set the response to 200 since there was no error.
-                response.status = res.statusCode;
-    
-                // Parse the response as JSON.
-                let apiResponseBody = {};
-                try {
-                    apiResponseBody = JSON.parse(res.body);
-                    
-                    const responseStartIndex = pageSizeInt * pageIndexInt;
-                    const responseStopIndex = responseStartIndex + pageSizeInt;
+            // Cocktail DB API Response.
+            const cocktailDBResponse = await cocktailAPIService.getCocktailsByName(cocktailName);
 
-                    const paginatedResponse = apiResponseBody.drinks.slice(responseStartIndex, responseStopIndex);
+            // User created cocktail reponse.
+            const userDBResponse = await cocktailDBService.getCocktailsByName(cocktailName);
 
-                    response.body = {
-                        drinks: paginatedResponse,
-                        total: apiResponseBody.drinks.length,
-                        pageIndex: pageIndexInt,
-                        pageSize: pageSizeInt
+            // If there was an error with either service, response with 503 and include both responses in body.
+            if (cocktailDBResponse.status != 200 || userDBResponse.status != 200) {
+                response = {
+                    status: 503,
+                    cocktailDB: {
+                        ...cocktailDBResponse
+                    },
+                    userDB: {
+                        ...cocktailDBResponse
                     }
-                } catch {
-                    response.body = {};
-                    response.errMsg = 'Unable to parse cocktaildb response.'
                 }
-    
-                return resolve(response);
-            });
+            }
+
+            const paginatedResponseBody = paginateResponse(pageSize, pageIndex, cocktailDBResponse.hits, userDBResponse.hits);
+
+            response = {
+                status: 200,
+                ...paginatedResponseBody
+            }
+
+            return resolve(response);
         });
     }
+    
+    async getAllCocktailsByFirstLetter(pageSize, pageIndex, cocktailFirstLetter) {
+        return new Promise(async function(resolve, reject) {
+            let response = {}
+
+            if (!cocktailFirstLetter) {
+                response.status = 503;
+                response.errMsg = 'Cocktail first letter cannot be blank.';
+                return resolve(response);
+            }
+
+            // Parse the page size and int.
+            let pageSizeInt = parseInt(pageSize);
+            let pageIndexInt = parseInt(pageIndex);
+
+            // If a non int is passed in as the page size or index, send back a 503.
+            if (isNaN(pageSizeInt) || isNaN(pageIndexInt)) {
+                response.status = 503;
+                response.errMsg = 'Error parsing pageSize or pageIndex.';
+                return resolve(response);
+            }
+
+            // Cocktail DB API Response.
+            const cocktailDBResponse = await cocktailAPIService.getCocktailsByFirstLetter(cocktailFirstLetter);
+
+            // User created cocktail reponse.
+            const userDBResponse = await cocktailDBService.getCocktailsByFirstLetter(cocktailFirstLetter);
+
+            // If there was an error with either service, response with 503 and include both responses in body.
+            if (cocktailDBResponse.status != 200 || userDBResponse.status != 200) {
+                response = {
+                    status: 503,
+                    cocktailDB: {
+                        ...cocktailDBResponse
+                    },
+                    userDB: {
+                        ...cocktailDBResponse
+                    }
+                }
+            }
+
+            const paginatedResponseBody = paginateResponse(pageSize, pageIndex, cocktailDBResponse.hits, userDBResponse.hits);
+
+            response = {
+                status: 200,
+                ...paginatedResponseBody
+            }
+
+            return resolve(response);
+        });
+    }
+
+    async getAllCocktailsByID(cocktailId) {
+        return new Promise(async function(resolve, reject) {
+            let response = {}
+
+            if (!cocktailId) {
+                response.status = 503;
+                response.errMsg = 'Cocktail first letter cannot be blank.';
+                return resolve(response);
+            }
+
+            // Cocktail DB API Response.
+            const cocktailDBResponse = await cocktailAPIService.getCocktailById(cocktailId);
+
+            // If there was a hit on the ID for the cocktail db api, return that cocktail.
+            if (cocktailDBResponse.total > 0) {
+                return resolve(cocktailDBResponse);
+            }
+
+            // User created cocktail reponse.
+            const userDBResponse = await cocktailDBService.getCocktailById(cocktailId);
+
+            // If there was a hit on the ID for the cocktail db api, return that cocktail.
+            if (userDBResponse.total > 0) {
+                return resolve(userDBResponse);
+            }
+
+            // If there was an error with either service, response with 503 and include both responses in body.
+            if (cocktailDBResponse.status != 200 || userDBResponse.status != 200) {
+                response = {
+                    status: 503,
+                    cocktailDB: {
+                        ...cocktailDBResponse
+                    },
+                    userDB: {
+                        ...cocktailDBResponse
+                    }
+                }
+            }
+
+            // There were no cocktails found
+            response = {
+                status: 200,
+                hits: [],
+                total: 0
+            }
+
+            return resolve(response);
+        });
+    }
+
+    async getAllCocktailsByIngredientNames(pageSize, pageIndex, ingredients) {
+        return new Promise(async function(resolve, reject) {
+            let response = {};
+
+            // Initialize filtered drink lists
+            let cocktailDBFilteredDrinks;
+            let userDBFilteredDBDrinks;
+
+            // Loop through the ingredient list and call the cocktail db each time with a single ingredient
+            for (let i = 0; i < ingredients.length; i++) {
+                // Call cocktail db service.
+                const singleIngredientCocktailDBResponse = await cocktailAPIService.getCocktailsByIngredientName(ingredients[i]);
+                // First set the cocktail db filtered drink list to the first reponse
+                // This is used for single ingredient response
+                if (undefined === cocktailDBFilteredDrinks) {
+                    cocktailDBFilteredDrinks = singleIngredientCocktailDBResponse.hits;
+                } else {
+                    // Initialize a temp variable that clones the total list of cocktail 
+                    let loopFilteredDrinks = [...cocktailDBFilteredDrinks]
+                    // Reset the filtered list array
+                    cocktailDBFilteredDrinks = [];
+                    // Loop through the cloned list of filtered drinks.
+                    loopFilteredDrinks.forEach((ing) => {
+                        singleIngredientCocktailDBResponse.hits.forEach((singleIng) => {
+                            // If the latest response from cocktail db has the same drinkId that is in our cloned filtered list, add it to the total filtered list.  
+                            if (ing.idDrink === singleIng.idDrink) {
+                                cocktailDBFilteredDrinks.push(ing);
+                            }
+                        })
+                    });
+                }
+            }
+
+            // Loop through the ingredient list and call the user db each time with a single ingredient
+            for (let i = 0; i < ingredients.length; i++) {
+                const singleIngredientUserDBResponse = await cocktailDBService.getCocktailsByIngredientName(ingredients[i]);
+                
+                if (undefined === userDBFilteredDBDrinks) {
+                    userDBFilteredDBDrinks = singleIngredientUserDBResponse.hits;
+                } else {
+                        let loopFilteredDrinks = [...userDBFilteredDBDrinks]
+                        userDBFilteredDBDrinks = [];
+                        loopFilteredDrinks.forEach((ing) => {
+                            singleIngredientUserDBResponse.hits.forEach((singleIng) => {
+                                    if (ing.idDrink === singleIng.idDrink) {
+                                        userDBFilteredDBDrinks.push(ing);
+                                    }
+                            })
+                        });
+                }
+            }
+
+            const paginatedResponseBody = paginateResponse(pageSize, pageIndex, cocktailDBFilteredDrinks, userDBFilteredDBDrinks);
+
+            response = {
+                status: 200,
+                ...paginatedResponseBody
+            }
+
+            return resolve(response);
+        });
+    }
+
+    async getAllCocktailsByCategories(pageSize, pageIndex, categories) {
+        return new Promise(async function(resolve, reject) {
+            let response = {};
+
+            // Initialize filtered drink lists
+            let cocktailDBCategoryDrinks = [];
+            let userDBCategoryDrinks = [];
+
+            // Loop through the ingredient list and call the cocktail db each time with a single ingredient
+            for (let i = 0; i < categories.length; i++) {
+                // Call cocktail db service.
+                const singleIngredientCocktailDBResponse = await cocktailAPIService.getCocktailsByCategory(categories[i]);
+
+                // if (singleIngredientCocktailDBResponse.hits)
+                
+                singleIngredientCocktailDBResponse.hits.forEach((singleIng) => {
+                    cocktailDBCategoryDrinks.push(singleIng);
+                });
+            }
+
+            // Loop through the ingredient list and call the cocktail db each time with a single ingredient
+            for (let i = 0; i < categories.length; i++) {
+                // Call cocktail db service.
+                const singleIngredientCocktailDBResponse = await cocktailDBService.getCocktailsByCategory(categories[i]);
+
+                // Push all di
+                singleIngredientCocktailDBResponse.hits.forEach((singleIng) => {
+                    userDBCategoryDrinks.push(singleIng);
+                });
+            }
+
+            const paginatedResponseBody = paginateResponse(pageSize, pageIndex, cocktailDBCategoryDrinks, userDBCategoryDrinks);
+
+            response = {
+                status: 200,
+                ...paginatedResponseBody
+            }
+
+            return resolve(response);
+        });
+    }
+
+    async getAllCocktailsByAlcoholic(pageSize, pageIndex, alcoholic) {
+        return new Promise(async function(resolve, reject) {
+            let response = {}
+
+            if (!alcoholic) {
+                response.status = 503;
+                response.errMsg = 'Cocktail alcoholic type cannot be blank.';
+                return resolve(response);
+            }
+
+            // Parse the page size and int.
+            let pageSizeInt = parseInt(pageSize);
+            let pageIndexInt = parseInt(pageIndex);
+
+            // If a non int is passed in as the page size or index, send back a 503.
+            if (isNaN(pageSizeInt) || isNaN(pageIndexInt)) {
+                response.status = 503;
+                response.errMsg = 'Error parsing pageSize or pageIndex.';
+                return resolve(response);
+            }
+
+            // Cocktail DB API Response.
+            const cocktailDBResponse = await cocktailAPIService.getCocktailsByAlcoholic(alcoholic);
+
+            // User created cocktail reponse.
+            const userDBResponse = await cocktailDBService.getCocktailsByAlcoholic(alcoholic);
+
+            // If there was an error with either service, response with 503 and include both responses in body.
+            if (cocktailDBResponse.status != 200 || userDBResponse.status != 200) {
+                response = {
+                    status: 503,
+                    cocktailDB: {
+                        ...cocktailDBResponse
+                    },
+                    userDB: {
+                        ...cocktailDBResponse
+                    }
+                }
+            }
+
+            const paginatedResponseBody = paginateResponse(pageSize, pageIndex, cocktailDBResponse.hits, userDBResponse.hits);
+
+            response = {
+                status: 200,
+                ...paginatedResponseBody
+            }
+
+            return resolve(response);
+        });
+    }
+
+    async getAllCocktailsByGlass(pageSize, pageIndex, glass) {
+        return new Promise(async function(resolve, reject) {
+            let response = {}
+
+            if (!glass) {
+                response.status = 503;
+                response.errMsg = 'Cocktail glass type cannot be blank.';
+                return resolve(response);
+            }
+
+            // Parse the page size and int.
+            let pageSizeInt = parseInt(pageSize);
+            let pageIndexInt = parseInt(pageIndex);
+
+            // If a non int is passed in as the page size or index, send back a 503.
+            if (isNaN(pageSizeInt) || isNaN(pageIndexInt)) {
+                response.status = 503;
+                response.errMsg = 'Error parsing pageSize or pageIndex.';
+                return resolve(response);
+            }
+
+            // Cocktail DB API Response.
+            const cocktailDBResponse = await cocktailAPIService.getCocktailsByGlass(glass);
+
+            // User created cocktail reponse.
+            const userDBResponse = await cocktailDBService.getCocktailsByGlass(glass);
+
+            // If there was an error with either service, response with 503 and include both responses in body.
+            if (cocktailDBResponse.status != 200 || userDBResponse.status != 200) {
+                response = {
+                    status: 503,
+                    cocktailDB: {
+                        ...cocktailDBResponse
+                    },
+                    userDB: {
+                        ...cocktailDBResponse
+                    }
+                }
+            }
+
+            const paginatedResponseBody = paginateResponse(pageSize, pageIndex, cocktailDBResponse.hits, userDBResponse.hits);
+
+            response = {
+                status: 200,
+                ...paginatedResponseBody
+            }
+
+            return resolve(response);
+        });
+    }
+
+    async getAllRandomCocktail() {
+        return new Promise(async function(resolve, reject) {
+            let response = {}
+
+            // Random number to determine if we will respond with cocktail db or user db cocktail
+            const randomNumber = Math.round(Math.random());
+
+            if (randomNumber === 0) {
+                response = await cocktailAPIService.getRandomCocktail();
+            } else {
+                response = await cocktailDBService.getRandomCocktail();
+            }
+
+            return resolve(response);
+        });
+    }
+}
+
+// Helper function to combine response drinks, sort and paginate.
+function paginateResponse(pageSizeInt, pageIndexInt, array1, array2) {
+    // Combine the two responses.
+    let combinedArray = [...array1, ...array2];
+    let combinedArrayLength = combinedArray.length;
+
+    // Sort the array by date modified to ensure consistent paginated results.
+    combinedArray.sort((a, b) => (a.dateModified < b.dateModified) ? 1 : -1)
+
+    // Determine which drinks to return for paginated results.
+    const responseStartIndex = pageSizeInt * pageIndexInt;
+    const responseStopIndex = responseStartIndex + pageSizeInt;
+
+    responseBody = {
+        hits: combinedArray.slice(responseStartIndex, responseStopIndex),
+        total: combinedArrayLength,
+        pageIndex: pageIndexInt,
+        pageSize: pageSizeInt
+    }
+    return responseBody;
 }
 
 module.exports = CocktailService;

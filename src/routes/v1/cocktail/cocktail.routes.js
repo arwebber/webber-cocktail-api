@@ -29,23 +29,11 @@ class CocktailRoutes {
 			this.cocktailController.getCocktailsByFirstLetter
 		);
 
-		/** Get a cocktail by ingredient */
-		// this.router.get(
-		// 	'/details/ingredient/:ingredient',
-		// 	this.cocktailController.getCocktailsByIngredientName
-		// );
-
 		/** Get a cocktail by multiple ingredients */
 		this.router.get(
 			'/details/ingredients/',
 			this.cocktailController.getCocktailsByIngredientNames
 		);
-
-		/** Get cocktails by category */
-		// this.router.get(
-		// 	'/details/category/:category',
-		// 	this.cocktailController.getCocktailsByCategory
-		// );
 
 		/** Get cocktails by categories */
 		this.router.get(

@@ -1,8 +1,8 @@
-const { CocktailService, CocktailDBService, CocktailEndpointService } = require('../../services/');
+const { CocktailAPIService, CocktailDBService, CocktailService } = require('../../services/');
 
 // Initialize the cocktail endpoint service
-const cocktailEndpointService = new CocktailEndpointService();
 const cocktailService = new CocktailService();
+const cocktailAPIService = new CocktailAPIService();
 class CocktailController {
 	async getCocktailsByName(req, res, next) {
 		try {
@@ -12,9 +12,9 @@ class CocktailController {
                   let pageSize = req.query.pageSize ? req.query.pageSize : '10';
                   let pageIndex = req.query.pageIndex ? req.query.pageIndex : '0';
 
-                  const response = await cocktailEndpointService.getAllCocktailsByName(pageSize, pageIndex, cocktailName);
+                  const response = await cocktailService.getAllCocktailsByName(pageSize, pageIndex, cocktailName);
 
-                  return res.json({response});
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
@@ -29,9 +29,9 @@ class CocktailController {
                   let pageSize = req.query.pageSize ? req.query.pageSize : '10';
                   let pageIndex = req.query.pageIndex ? req.query.pageIndex : '0';
 
-                  const response = await cocktailEndpointService.getAllCocktailsByFirstLetter(pageSize, pageIndex, firstLetter);
+                  const response = await cocktailService.getAllCocktailsByFirstLetter(pageSize, pageIndex, firstLetter);
 
-                  return res.json({response});
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
@@ -42,9 +42,9 @@ class CocktailController {
 		try {
                   const { id } = req.params;
 
-                  const response = await cocktailEndpointService.getAllCocktailsByID(id);
+                  const response = await cocktailService.getAllCocktailsByID(id);
 
-                  return res.json({response});
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
@@ -54,8 +54,8 @@ class CocktailController {
       async getIngredientDetailsByName(req, res, next) {
 		try {
                   const { ingredientName } = req.params;
-                  const response = await cocktailService.getIngredientDetailsByName(ingredientName);
-                  return res.json({response});
+                  const response = await cocktailAPIService.getIngredientDetailsByName(ingredientName);
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
@@ -65,8 +65,8 @@ class CocktailController {
       async getIngredientDetailsById(req, res, next) {
 		try {
                   const { ingredientId } = req.params;
-                  const response = await cocktailService.getIngredientDetailsById(ingredientId);
-                  return res.json({response});
+                  const response = await cocktailAPIService.getIngredientDetailsById(ingredientId);
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
@@ -75,9 +75,9 @@ class CocktailController {
 
       async getRandomCocktail(req, res, next) {
 		try {
-                  const response = await cocktailEndpointService.getAllRandomCocktail();
+                  const response = await cocktailService.getAllRandomCocktail();
 
-                  return res.json({response});
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
@@ -98,8 +98,8 @@ class CocktailController {
 
                   let ingredientsArray = ingredients.split(',');
 
-                  const response = await cocktailEndpointService.getAllCocktailsByIngredientNames(pageSize, pageIndex, ingredientsArray);
-                  return res.json({response});
+                  const response = await cocktailService.getAllCocktailsByIngredientNames(pageSize, pageIndex, ingredientsArray);
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
@@ -114,14 +114,14 @@ class CocktailController {
                   let pageSize = req.query.pageSize ? req.query.pageSize : '10';
                   let pageIndex = req.query.pageIndex ? req.query.pageIndex : '0';
 
-                  // const response = await cocktailService.getCocktailsByAlcoholic(pageSize, pageIndex, alcoholic);
+                  // const response = await cocktailAPIService.getCocktailsByAlcoholic(pageSize, pageIndex, alcoholic);
 
-                  const response = await cocktailEndpointService.getAllCocktailsByAlcoholic(pageSize, pageIndex, alcoholic);
+                  const response = await cocktailService.getAllCocktailsByAlcoholic(pageSize, pageIndex, alcoholic);
 
                   // user db reponse
                   // const responseDB = await cocktailDBService.getCocktailsByAlcoholic(alcoholic);
 
-                  return res.json({response});
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
@@ -142,9 +142,9 @@ class CocktailController {
 
                   let categoriesArray = categories.split(',');
 
-                  const response = await cocktailEndpointService.getAllCocktailsByCategories(pageSize, pageIndex, categoriesArray);
+                  const response = await cocktailService.getAllCocktailsByCategories(pageSize, pageIndex, categoriesArray);
 
-                  return res.json({response});
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
@@ -159,9 +159,9 @@ class CocktailController {
                   let pageSize = req.query.pageSize ? req.query.pageSize : '10';
                   let pageIndex = req.query.pageIndex ? req.query.pageIndex : '0';
 
-                  const response = await cocktailEndpointService.getAllCocktailsByGlass(pageSize, pageIndex, glass);
+                  const response = await cocktailService.getAllCocktailsByGlass(pageSize, pageIndex, glass);
 
-                  return res.json({response});
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
@@ -176,8 +176,8 @@ class CocktailController {
                   let pageSize = req.query.pageSize ? req.query.pageSize : '10';
                   let pageIndex = req.query.pageIndex ? req.query.pageIndex : '0';
 
-                  const response = await cocktailService.getFilterListByFilter(pageSize, pageIndex, filter);
-                  return res.json({response});
+                  const response = await cocktailAPIService.getFilterListByFilter(pageSize, pageIndex, filter);
+                  return res.json(response);
             } 
             catch (err) {
                   return next(err);
